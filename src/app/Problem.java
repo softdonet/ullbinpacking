@@ -4,20 +4,35 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Clase que contiene la informacion necesaria para representar un problema.
  * 
  * @author Jaime Abraham Corrales Gonzalez
- * @author Anadid vuestros nombres
+ * @author Jaime Gonzalez Valdes
+ * @author Miguel Monterrey Varela
+ * @author Eduardo Perez Mederos
  * 
- * @version 0.1
+ * @version 0.1a
  */
 public class Problem
 {
-	private int binHeight;
-	private int binWidth;
+	/**
+	 * Bin - Prototipo de caja.
+	 */
+	private Bin b;
+	
+	/**
+	 * Rec - Rectangulos del problema.
+	 */
 	private Rectangle rec[];
+	
+	/**
+	 * S - Solucion inicial del problema.
+	 */
+	private Solution s;
 	
 	/**
 	 * Constructor dada una ruta, absoluta o relativa, a un fichero de datos que
@@ -29,7 +44,29 @@ public class Problem
 	 */
 	public Problem (String fileName)
 	{
-		rec = readFile (fileName);
+		this.rec = readFile (fileName);
+		
+	    ArrayList<Rectangle> toSort = new ArrayList<Rectangle> ();
+	    
+		for (int i = 0; i < rec.length; i++)
+			toSort.add (rec[i]);
+
+	    Collections.sort (toSort, Collections.reverseOrder());
+	    
+		for (int i = 0; i < rec.length; i++)
+			rec[i] = toSort.get(i);	
+		
+		this.s = new Solution (Solution.DETERMINISTIC, rec.length);
+	}
+	
+	/**
+	 * Metodo que obtiene la solucion inicial del problema.
+	 * 
+	 * @return Solucion inicial.
+	 */
+	public Solution getSolution ()
+	{
+		return this.s;
 	}
 	
 	/**
@@ -52,9 +89,10 @@ public class Problem
 			myTokenizer = new StreamTokenizer(myReader);
 			
 			myTokenizer.nextToken();
-			binWidth = (int) myTokenizer.nval;
+			int binWidth = (int) myTokenizer.nval;
 			myTokenizer.nextToken();
-			binHeight = (int) myTokenizer.nval;
+			int binHeight = (int) myTokenizer.nval;
+			b = new Bin (binWidth, binHeight);
 			
 			myTokenizer.nextToken();
 			int n = (int) myTokenizer.nval;
@@ -111,7 +149,7 @@ public class Problem
 	 */
 	public String toString ()
 	{
-		String toRet = new String ("Caja: [" + this.binWidth + " x " + this.binHeight + "], Area: " + this.binWidth * this.binHeight + "\n");
+		String toRet = new String ("Caja: [" + b.getWidth () + " x " + b.getHeight () + "], Area = " + b.getArea () + "\n");
 		
 		toRet += "Rectangulos del problema:\n";
 		

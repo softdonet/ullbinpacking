@@ -4,7 +4,9 @@ import app.Problem;
  * Clase principal del proyecto.
  * 
  * @author Jaime Abraham Corrales Gonzalez
- * @author Anadid vuestros nombres
+ * @author Jaime Gonzalez Valdes
+ * @author Miguel Monterrey Varela
+ * @author Eduardo Perez Mederos
  * 
  * @version 0.1
  */
