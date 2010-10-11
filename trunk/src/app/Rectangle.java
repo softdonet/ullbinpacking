@@ -4,14 +4,27 @@ package app;
  * Clase que contiene la informacion necesaria para representar un rectangulo.
  * 
  * @author Jaime Abraham Corrales Gonzalez
- * @author Anadid vuestros nombres
+ * @author Jaime Gonzalez Valdes
+ * @author Miguel Monterrey Varela
+ * @author Eduardo Perez Mederos
  *
- * @version 0.1
+ * @version 0.1a
  */
-public class Rectangle
+public class Rectangle implements Comparable<Rectangle>
 {
+	/**
+	 * Area - Area del rectangulo.
+	 */
 	private int area;
+	
+	/**
+	 * Height - Alto del rectangulo.
+	 */
 	private int height;
+	
+	/**
+	 * Width - Ancho del rectangulo.
+	 */
 	private int width;
 	
 	/**
@@ -25,6 +38,24 @@ public class Rectangle
 		this.height = height;
 		this.width = width;
 		this.area = height * width;
+	}
+	
+	/**
+	 * Metodo que compara dos rectangulos y determina cual es el mayor en funcion
+	 * del area que ocupa.
+	 * 
+	 * @param r - Rectangulo a comparar.
+	 * @return 1, 0 o -1 en funcion de si el area del rectangulo comparador es
+	 * mayor, igual o menor que la del rectangulo comparado.
+	 */
+	public int compareTo (Rectangle r)
+	{
+		if (this.area > r.getArea ())
+			return 1;
+		else if (this.area < r.getArea ())
+			return -1;
+		else
+			return 0;
 	}
 	
 	/**
