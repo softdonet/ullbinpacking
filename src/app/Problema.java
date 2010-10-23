@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Clase con los datos necesarios para representar un problema de Bin Packing.
@@ -22,12 +23,18 @@ public class Problema
 	private ArrayList<Rectangulo> rec;
 	private int altoCaja;
 	private int anchoCaja;
+	private Solucion s;
 	
 	public Problema (String fileName)
 	{
 		this.rec = readFile (fileName);
 		
-		// Prueba
+		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
+	    Collections.sort (rec, Collections.reverseOrder());
+		
+		s = new Solucion (Solucion.DETERMINISTA, rec.size ());
+		
+		/* Prueba
 		Caja c = new Caja(this.altoCaja, this.anchoCaja);
 		
 		Punto p1 = new Punto(4, 4);
@@ -44,7 +51,7 @@ public class Problema
 		
 		c.BorrarPuntoLibre(p1);
 		
-		System.out.println(c);
+		System.out.println(c);*/
 	}
 	
 	public ArrayList<Rectangulo> readFile (String fileName)
@@ -103,6 +110,11 @@ public class Problema
         }
         
         return new ArrayList<Rectangulo> ();
+	}
+	
+	public Solucion getSolucion ()
+	{
+		return s;
 	}
 	
 	public String toString ()
