@@ -1,7 +1,5 @@
 package app;
 import java.lang.Comparable;
-///import java.util.Collections;
-
 
 /**
  * Clase con los datos necesarios para representar un punto (x,y).
@@ -42,6 +40,10 @@ public class Punto implements Comparable<Punto>
 	}
 	
 	public int compareTo(Punto p) {
-		return this.y.compareTo(p.getY());
+		return this.y.compareTo(p.getY()); // si tienen las misma y se toma la x mas pequeña???
+	}
+	
+	public String toString() {
+		return new String("(" + this.x + "," + this.y + ")");
 	}
 }

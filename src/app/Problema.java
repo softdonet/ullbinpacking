@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 
-
 /**
  * Clase con los datos necesarios para representar un problema de Bin Packing.
  * 
@@ -27,6 +26,25 @@ public class Problema
 	public Problema (String fileName)
 	{
 		this.rec = readFile (fileName);
+		
+		// Prueba
+		Caja c = new Caja(this.altoCaja, this.anchoCaja);
+		
+		Punto p1 = new Punto(4, 4);
+		Punto p2 = new Punto(3, 8);
+		Punto p3 = new Punto(6, 3);
+		
+		c.AddPuntoLibre(p1);
+		c.AddPuntoLibre(p2);
+		c.AddPuntoLibre(p3);
+		
+		c.OrdenarPuntosLibres();
+		
+		System.out.println(c);
+		
+		c.BorrarPuntoLibre(p1);
+		
+		System.out.println(c);
 	}
 	
 	public ArrayList<Rectangulo> readFile (String fileName)
