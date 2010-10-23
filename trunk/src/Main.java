@@ -7,5 +7,6 @@ public class Main
 		Problema p = new Problema ("./datasets/modelo.dat");
 		
 		System.out.println (p);
+		System.out.println (p.getSolucion ());
 	}
 }
