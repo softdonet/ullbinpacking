@@ -17,39 +17,65 @@ import java.util.Collections;
 
 public class Caja 
 {
-	// Todas las cajas van a ser iguales y ya guardamos estos datos en problema
-	// en principio en esta clase no hacen falta
-	private int alto;
-	private int ancho;
-	private int area;
 	private ArrayList<Punto> PuntosLibres;
 	private ArrayList<Rectangulo> RecIn;
 	
-	public Caja(int alto, int ancho) {
-		this.alto = alto;
-		this.ancho = ancho;
-		this.area = alto * ancho;
+	/**
+	 * Constructor para la clase Caja
+	 */
+	public Caja() {
 		PuntosLibres = new ArrayList<Punto>();
 		RecIn = new ArrayList<Rectangulo>();
+		
+		Punto p = new Punto(0,0);
+		
+		PuntosLibres.add(p);
 	}
 	
+	/**
+	 * Añade un punto a la lista de puntos libres de la Caja
+	 */
 	public void AddPuntoLibre(Punto p) {
 		this.PuntosLibres.add(p);
 	}
 	
+	/**
+	 * Borra un punto ya ocupado
+	 */
+	// Parece que no va a hacer falta
 	public void BorrarPuntoLibre(Punto p) {
 		this.PuntosLibres.remove(p);
 	}
 	
+	/**
+	 * Ordena la lista de puntos libres
+	 */
 	public void OrdenarPuntosLibres() {
 		Collections.sort(this.PuntosLibres);
 	}
 	
+	/**
+	 * Introduce un rectangulo en el contenedor
+	 */
+	public void NuevoRectangulo(Rectangulo r) {
+		RecIn.add(r);
+		
+		PuntosLibres.remove(r.getPos());
+	}
+	
+	/**
+	 * Salida del contenido de la caja 
+	 */
 	public String toString() {
 		String toRet = new String("Puntos libres: " + this.PuntosLibres.size() + "\n");
 		
 		for (int i = 0; i < this.PuntosLibres.size(); i++)
 			toRet += this.PuntosLibres.get(i) + "\n";
+		
+		toRet += "\n";
+		
+		for (int i = 0; i < this.RecIn.size(); i++)
+			toRet += this.RecIn.get(i) + "\n";
 		
 		return toRet;
 	}
