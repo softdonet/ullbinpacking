@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.awt.Point;
+
 
 /**
  * Clase con los datos necesarios para representar un problema de Bin Packing.
@@ -32,7 +34,7 @@ public class Problema
 		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
 	    Collections.sort (rec, Collections.reverseOrder());
 		
-		s = new Solucion (Solucion.DETERMINISTA, rec.size ());
+		s = new Solucion (Solucion.ALEATORIA, rec.size ());
 		
 		/* Prueba
 		Caja c = new Caja(this.altoCaja, this.anchoCaja);
