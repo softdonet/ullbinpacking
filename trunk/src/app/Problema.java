@@ -11,7 +11,6 @@ import java.util.Collections;
 /**
  * Clase con los datos necesarios para representar un problema de Bin Packing.
  * 
- * @author Jaime Abraham Corrales Gonzalez
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
  * @author Jaime Gonzalez Valdes
@@ -31,28 +30,26 @@ public class Problema
 		this.rec = readFile (fileName);
 		
 		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
-	    Collections.sort (rec, Collections.reverseOrder());
+		// reverse order???
+	    //Collections.sort (rec, Collections.reverseOrder());
 		
-		s = new Solucion (Solucion.ALEATORIA, rec.size ());
+		s = new Solucion (Solucion.DETERMINISTA, rec.size ());
 		
-		/* Prueba
+		// Prueba
 		Caja c = new Caja(this.altoCaja, this.anchoCaja);
 		
-		Punto p1 = new Punto(4, 4);
-		Punto p2 = new Punto(3, 8);
-		Punto p3 = new Punto(6, 3);
+		Punto p1 = new Punto(0, 0);
+		Punto p2 = new Punto(3, 0);
 		
-		c.AddPuntoLibre(p1);
-		c.AddPuntoLibre(p2);
-		c.AddPuntoLibre(p3);
+		Rectangulo r = new Rectangulo(3, 5);
+		Rectangulo rr = new Rectangulo(2, 7);
+		r.setPos(p1);
+		rr.setPos(p2);
 		
-		c.OrdenarPuntosLibres();
+		c.NuevoRectangulo(r);
+		c.NuevoRectangulo(rr);
 		
 		System.out.println(c);
-		
-		c.BorrarPuntoLibre(p1);
-		
-		System.out.println(c);*/
 	}
 	
 	public ArrayList<Rectangulo> readFile (String fileName)

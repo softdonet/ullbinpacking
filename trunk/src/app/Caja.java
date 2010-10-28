@@ -6,7 +6,6 @@ import java.util.Collections;
 /**
  * Clase con los datos necesarios para representar un contenedor.
  * 
- * @author Jaime Abraham Corrales Gonzalez
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
  * @author Jaime Gonzalez Valdes
@@ -45,12 +44,12 @@ public class Caja
 	 */
 	public void AddPuntosLibres(Punto puntoRec, int altoRec, int anchoRec) {
 		if ((puntoRec.getY() + altoRec) < this.alto) {
-			Punto p1 = new Punto(puntoRec.getX(), puntoRec.getY() + altoRec);
+			Punto p1 = new Punto(puntoRec.getY() + altoRec, puntoRec.getX());
 			this.PuntosLibres.add(p1);
 		}
 		
 		if ((puntoRec.getX() + anchoRec) < this.ancho) {
-			Punto p2 = new Punto(puntoRec.getX() + ancho, puntoRec.getY());
+			Punto p2 = new Punto(puntoRec.getY(), puntoRec.getX() + anchoRec);
 			this.PuntosLibres.add(p2);
 		}
 	}
@@ -96,8 +95,46 @@ public class Caja
 		
 		toRet += "\n";
 		
-		for (int i = 0; i < this.RecIn.size(); i++)
-			toRet += this.RecIn.get(i) + "\n";
+		int matriz[][] = new int[ancho][alto];
+		
+		for (int i = 0; i < ancho; i++) {
+			for (int j = 0; j < alto; j++) {
+				matriz[i][j] = 0;
+			}
+		}
+		
+		
+		/*for (int i = 0; i < this.RecIn.size(); i++)
+			toRet += this.RecIn.get(i) + "\n";*/
+		
+		Rectangulo r = new Rectangulo();
+		
+		for (int i = 0; i < this.RecIn.size(); i++) {
+			r = RecIn.get(i);
+			Punto p = new Punto();
+			p = r.getPos();
+			
+			
+			for (int y = this.alto - 1 - p.getY(); y > (this.alto - 1 - p.getY()) - r.getAlto(); y--) {
+				for (int x = p.getX(); x < r.getAncho() + p.getX(); x++) {
+					matriz[x][y] = 1;
+				}
+			}
+		}
+			
+		
+		
+		
+		for (int j = 0; j < this.alto; j++) {
+			for (int i = 0; i < this.ancho; i++) {
+				toRet += matriz[i][j];
+			}
+			
+			toRet += "\n";
+		}
+		
+		
+			
 		
 		return toRet;
 	}

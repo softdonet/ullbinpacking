@@ -7,7 +7,6 @@ import java.util.Random;
 /**
  * Clase con los datos necesarios para representar una solucion de Bin Packing.
  * 
- * @author Jaime Abraham Corrales Gonzalez
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
  * @author Jaime Gonzalez Valdes
