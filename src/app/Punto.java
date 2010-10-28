@@ -1,9 +1,8 @@
 package app;
 
 /**
- * Clase con los datos necesarios para representar un punto (x, y).
+ * Clase con los datos necesarios para representar un punto (y, x).
  * 
- * @author Jaime Abraham Corrales Gonzalez
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
  * @author Jaime Gonzalez Valdes
@@ -15,6 +14,8 @@ public class Punto implements Comparable<Punto>
 {
 	private int x;
 	private int y;
+	
+	// corregir esta clase y ponerla asi (eje y, eje x)
 	
 	/**
 	 * Constructor por defecto de la clase Punto.
@@ -32,7 +33,7 @@ public class Punto implements Comparable<Punto>
 	 * @param x - Coordenada x.
 	 * @param y - Coordenada y.
 	 */
-	public Punto(int x, int y) {
+	public Punto(int y, int x) {
 		this.x = x;
 		this.y = y;
 	}
@@ -89,6 +90,6 @@ public class Punto implements Comparable<Punto>
 	 * Metodo para resumir la informacion de un Punto en una cadena de caracteres.
 	 */
 	public String toString() {
-		return new String("(" + this.x + "," + this.y + ")");
+		return new String("(" + this.y + "," + this.x + ")");
 	}
 }

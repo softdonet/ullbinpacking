@@ -3,7 +3,6 @@ package app;
 /**
  * Clase con los datos necesarios para representar un rectangulo.
  * 
- * @author Jaime Abraham Corrales Gonzalez
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
  * @author Jaime Gonzalez Valdes
@@ -21,11 +20,8 @@ public class Rectangulo implements Comparable<Rectangulo>
 	/**
 	 * Constructor de la clase Rectangulo.
 	 * Crea un rectangulo dado su alto y su ancho.
-	 * 
-	 * @param alto
-	 * @param ancho
 	 */
-	public Rectangulo (int alto, int ancho)
+	public Rectangulo ()
 	{
 		this.alto = alto;
 		this.ancho = ancho;
@@ -34,6 +30,11 @@ public class Rectangulo implements Comparable<Rectangulo>
 		this.pos = new Punto ();
 	}
 	
+	public Rectangulo(int alto, int ancho) {
+		this.alto = alto;
+		this.ancho = ancho;
+	}
+
 	/**
 	 * Metodo que compara dos rectangulos y determina cual es el mayor en funcion
 	 * del area que ocupa.
