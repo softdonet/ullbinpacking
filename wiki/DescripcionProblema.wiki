@@ -7,4 +7,4 @@ Supondremos, sin pérdida de generalidad, que wj, hj, W, H son enteros, y que wj
 
 *Otra descripción*
 
-Dado un conjunto de n items bidimensionales (rect ́angulos), {i1,i2,...,in}, de dimensiones respectivas (h(i1),w(i1)),(h(i2),w(i2)),...,(h(in),w(in)), determinar el menor nu ́mero de bins (rect ́agulos) de dimensiones (H,W) necesarios para empaquetar sin solapamientos todos los items. Se supondr ́a que h(ij) ≤ H, w(ij) ≤ W, ∀j = 1,...,n y que los items no pueden rotarse. El empaquetado resultante no necesariamente debe poder obtenerse con cortes tipo guillotina.
+Dado un conjunto de n items bidimensionales (rectángulos), {i1,i2,...,in}, de dimensiones respectivas (h(i1),w(i1)),(h(i2),w(i2)),...,(h(in),w(in)), determinar el menor número de bins (rectángulos) de dimensiones (H,W) necesarios para empaquetar sin solapamientos todos los items. Se supondrá que h(ij) ≤ H, w(ij) ≤ W, ∀j = 1,...,n y que los items no pueden rotarse. El empaquetado resultante no necesariamente debe poder obtenerse con cortes tipo guillotina.
