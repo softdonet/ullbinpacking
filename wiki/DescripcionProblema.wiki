@@ -1,0 +1,6 @@
+#summary Problema
+= Problema: Empaquetado 2D sin cortes guillotina =
+*Descripcíon*
+
+Sea dado un conjunto de n items rectangulares y un número ilimitado de bins rectangulares idénticos de amplitud W y altura H. Sean wj y hj  la amplitud (width) y altura (height), respectivamente, del item j. Deseamos empaquetar, sin solapamiento, todos los items en el menor número de bins. Se asume que lo items tienen orientación fija, es decir, no pueden rotarse.
+Supondremos, sin pérdida de generalidad, que wj, hj, W, H son enteros, y que wj ≤ W y hj ≤ H (j = 1, …, n).
