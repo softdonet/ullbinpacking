@@ -25,32 +25,27 @@ public class Rectangulo implements Comparable<Rectangulo>
 	{
 		this.alto = alto;
 		this.ancho = ancho;
-		this.area = alto * ancho;
-		
-		this.pos = new Punto ();
 	}
 	
 	public Rectangulo(int alto, int ancho) {
 		this.alto = alto;
 		this.ancho = ancho;
+		this.area = alto * ancho;
+		
+		this.pos = new Punto();
 	}
 
 	/**
 	 * Metodo que compara dos rectangulos y determina cual es el mayor en funcion
-	 * del area que ocupa.
+	 * de su altura.
 	 * 
 	 * @param r - Rectangulo a comparar.
 	 * @return 1, 0 o -1 en funcion de si el area del rectangulo comparador es
 	 * mayor, igual o menor que el area del rectangulo comparado.
 	 */
-	public int compareTo (Rectangulo r)
+	public int compareTo(Rectangulo r)
 	{
-		if (this.area > r.getArea ())
-			return 1;
-		else if (this.area < r.getArea ())
-			return -1;
-		else
-			return 0;
+		return ((Integer)alto).compareTo(r.getAlto());
 	}
 
 	/**
@@ -96,15 +91,6 @@ public class Rectangulo implements Comparable<Rectangulo>
 	 */
 	public int getArea() {
 		return area;
-	}
-
-	/**
-	 * Metodo para asignar el area a un rectangulo.
-	 * 
-	 * @param area - Nuevo area del rectangulo.
-	 */
-	public void setArea(int area) {
-		this.area = area;
 	}
 	
 	/**

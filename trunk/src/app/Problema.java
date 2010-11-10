@@ -21,19 +21,18 @@ import java.util.Collections;
 public class Problema
 {
 	private ArrayList<Rectangulo> rec;
-	private int altoCaja;
-	private int anchoCaja;
+	private int altoCaja; // H
+	private int anchoCaja; // W
 	private Solucion s;
 	
-	public Problema (String fileName)
+	public Problema(String fileName) 
 	{
-		this.rec = readFile (fileName);
+		this.rec = readFile(fileName);
 		
 		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
-		// reverse order???
-	    //Collections.sort (rec, Collections.reverseOrder());
+	    Collections.sort(rec, Collections.reverseOrder());
 		
-		s = new Solucion (Solucion.DETERMINISTA, rec.size ());
+		s = new Solucion(Solucion.DETERMINISTA, rec.size(), altoCaja, anchoCaja);
 		
 		// Prueba
 		Caja c = new Caja(this.altoCaja, this.anchoCaja);
@@ -65,45 +64,44 @@ public class Problema
                 myTokenizer = new StreamTokenizer(myReader);
                 
                 myTokenizer.nextToken();
-                anchoCaja = (int) myTokenizer.nval;
+                anchoCaja = (int)myTokenizer.nval;
                 myTokenizer.nextToken();
-                altoCaja = (int) myTokenizer.nval;
+                altoCaja = (int)myTokenizer.nval;
                 
                 myTokenizer.nextToken();
-                int n = (int) myTokenizer.nval;
+                int n = (int)myTokenizer.nval;
                 ArrayList<Rectangulo> rec = new ArrayList<Rectangulo> ();
                 
-                for (int i = 0; i < n; i++)
-                {
-                        myTokenizer.nextToken ();
-                        int width = (int) myTokenizer.nval;
-                        myTokenizer.nextToken ();
-                        int height = (int) myTokenizer.nval;
+                for (int i = 0; i < n; i++) {
+                	myTokenizer.nextToken ();
+                    int width = (int)myTokenizer.nval;
+                    myTokenizer.nextToken ();
+                    int height = (int)myTokenizer.nval;
                         
-                        Rectangulo r = new Rectangulo (height, width);
-                        rec.add (r);
+                    Rectangulo r = new Rectangulo(height, width);
+                    rec.add(r);
                 }
                 
                 return rec;                     
         }
         catch (IOException e)
         {
-                System.out.println ("Error - Apertura/lectura de fichero.");
+                System.out.println("Error - Apertura/lectura de fichero.");
                 
-                System.exit (1);
+                System.exit(1);
         }
         finally
         {
                 try
                 {
-                        myStream.close ();
-                        myReader.close ();
+                        myStream.close();
+                        myReader.close();
                 }
                 catch (IOException e)
                 {
-                        System.out.println ("Error - Cierre de fichero.");
+                        System.out.println("Error - Cierre de fichero.");
                         
-                        System.exit (1);
+                        System.exit(1);
                 }
         }
         

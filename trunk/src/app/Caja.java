@@ -2,6 +2,7 @@ package app;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Clase con los datos necesarios para representar un contenedor.
@@ -19,7 +20,7 @@ public class Caja
 	private int alto;
 	private int ancho;
 	private int area;
-	private ArrayList<Punto> PuntosLibres;
+	private HashMap<Punto, Integer> PuntoCota;
 	private ArrayList<Rectangulo> RecIn;
 	
 	/**
@@ -30,12 +31,10 @@ public class Caja
 		this.ancho = ancho;
 		this.area = alto * ancho;
 		
-		PuntosLibres = new ArrayList<Punto>();
 		RecIn = new ArrayList<Rectangulo>();
 		
-		Punto p = new Punto(0,0);
-		
-		PuntosLibres.add(p);
+		PuntoCota = new HashMap<Punto, Integer>();
+		PuntoCota.put(new Punto(0,0), alto);
 	}
 
 	/**
@@ -44,30 +43,29 @@ public class Caja
 	 */
 	public void AddPuntosLibres(Punto puntoRec, int altoRec, int anchoRec) {
 		if ((puntoRec.getY() + altoRec) < this.alto) {
-			Punto p1 = new Punto(puntoRec.getY() + altoRec, puntoRec.getX());
-			this.PuntosLibres.add(p1);
+			PuntoCota.put(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto);
 		}
 		
 		if ((puntoRec.getX() + anchoRec) < this.ancho) {
-			Punto p2 = new Punto(puntoRec.getY(), puntoRec.getX() + anchoRec);
-			this.PuntosLibres.add(p2);
+			PuntoCota.put(new Punto(puntoRec.getX() + anchoRec, puntoRec.getY()), puntoRec.getY() + altoRec);
 		}
-	}
+	} // comprobar que esto esta bien
+	
 	
 	/**
 	 * Borra un punto ya ocupado
 	 */
 	// quizas no sea necesario
-	public void BorrarPuntoLibre(Punto p) {
+	/*public void BorrarPuntoLibre(Punto p) {
 		this.PuntosLibres.remove(p);
-	}
+	}*/
 	
 	/**
 	 * Ordena la lista de puntos libres
 	 */
-	public void OrdenarPuntosLibres() {
+	/*public void OrdenarPuntosLibres() {
 		Collections.sort(this.PuntosLibres);
-	}
+	}*/
 	
 	/**
 	 * Introduce un rectangulo en el contenedor y genera dos puntos libres
@@ -79,15 +77,21 @@ public class Caja
 		
 		p = r.getPos();
 		
-		PuntosLibres.remove(p);
+		//PuntosLibres.remove(p);
 		
 		AddPuntosLibres(p, r.getAlto(), r.getAncho());
 	} 
 	
+	public boolean NoCabe() {
+		boolean toRet = true;
+		
+		return toRet;
+	}
+	
 	/**
 	 * Salida del contenido de la caja 
 	 */
-	public String toString() {
+/*	public String toString() {
 		String toRet = new String("Puntos libres: " + this.PuntosLibres.size() + "\n");
 		
 		for (int i = 0; i < this.PuntosLibres.size(); i++)
@@ -104,8 +108,8 @@ public class Caja
 		}
 		
 		
-		/*for (int i = 0; i < this.RecIn.size(); i++)
-			toRet += this.RecIn.get(i) + "\n";*/
+		for (int i = 0; i < this.RecIn.size(); i++)
+			toRet += this.RecIn.get(i) + "\n";
 		
 		Rectangulo r = new Rectangulo();
 		
@@ -113,7 +117,6 @@ public class Caja
 			r = RecIn.get(i);
 			Punto p = new Punto();
 			p = r.getPos();
-			
 			
 			for (int y = this.alto - 1 - p.getY(); y > (this.alto - 1 - p.getY()) - r.getAlto(); y--) {
 				for (int x = p.getX(); x < r.getAncho() + p.getX(); x++) {
@@ -137,5 +140,5 @@ public class Caja
 			
 		
 		return toRet;
-	}
+	} */
 }
