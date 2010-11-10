@@ -26,6 +26,11 @@ public class Solucion
 	private ArrayList<Caja> cajas;
 	private int permutacion[];
 	
+	
+	public Solucion() {
+		cajas = new ArrayList<Caja>();
+	}
+	
 	/**
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
 	 * rectangulos.
@@ -33,22 +38,33 @@ public class Solucion
 	 * @param genType - Tipo de permutacion de datos.
 	 * @param size - Numero de rectangulos.
 	 */
-	public Solucion (int permType, int size) // Habria que darle la caja prototipo para que genere mas iguales?
-	{
-		cajas = new ArrayList<Caja> ();
+	public Solucion (int permType, int size, int altoCaja, int anchoCaja) {
+		cajas = new ArrayList<Caja>();
 		
-		switch (permType)
-		{
+		switch (permType) {
 			case ALEATORIA:
-				permAleatoria (size);
+				permAleatoria(size);
 				break;
 			case DETERMINISTA:
-				permDeterminista (size);
+				permDeterminista(size);
 				break;
 			case MIXTA:
-				permMixta (size);
+				permMixta(size);
 				break;
 		}
+		
+		//cajas = FiniteFirstFit(altoCaja, anchoCaja);
+		
+		cajas.add(new Caja(altoCaja, anchoCaja));
+		
+		//while 
+		/*for (int i = 0; i < cajas.size(); i++) {
+			Caja bin = cajas.get(i);
+			
+			if ((i == cajas.size() - 1) && (bin.NoCabe())) {
+				cajas.add(new Caja(altoCaja, anchoCaja));
+			}
+		}*/
 	}
 	
 	/**
@@ -63,12 +79,12 @@ public class Solucion
 		ArrayList<Integer> toMix = new ArrayList<Integer>();
 
 		for (int i = 0; i < size; i++)
-			toMix.add (i);
+			toMix.add(i);
 
-		Collections.shuffle (toMix);
+		Collections.shuffle(toMix);
 
 		for (int i = 0; i < size; i++)
-			permutacion[i] = toMix.get (i);
+			permutacion[i] = toMix.get(i);
 	}
 	
 	/**
@@ -78,7 +94,7 @@ public class Solucion
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	private void permDeterminista (int size)
+	private void permDeterminista(int size)
 	{
 		permutacion = new int[size];
 
@@ -93,7 +109,7 @@ public class Solucion
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	private void permMixta (int size)
+	private void permMixta (int size) // la dejamos o la quitamos
 	{
 		permutacion = new int[size];
 
@@ -102,10 +118,10 @@ public class Solucion
 
 		for (int i = 0; (3 + i) < size; i++)
 		{
-			Random RNG = new Random (System.nanoTime ());
-			int j = RNG.nextInt (3);
+			Random RNG = new Random(System.nanoTime());
+			int j = RNG.nextInt(3);
 
-			swap (permutacion, i, j + i);
+			swap(permutacion, i, j + i);
 		}
 	}
 	
@@ -122,6 +138,25 @@ public class Solucion
 		int temp = array[posTwo];
 		array[posTwo] = array[posOne];
 		array[posOne] = temp;
+	}
+	
+	public void FiniteFirsFit(int altoCaja, int anchoCaja) {
+		cajas.add(new Caja(altoCaja, anchoCaja));
+		
+		for (int i = 0; i < permutacion.length; i++) {
+			
+		}
+		
+		//while 
+		/*for (int i = 0; i < cajas.size(); i++) {
+			Caja bin = cajas.get(i);
+			
+			if ((i == cajas.size() - 1) && (bin.NoCabe())) {
+				cajas.add(new Caja(altoCaja, anchoCaja));
+			}
+		}*/
+		
+		
 	}
 	
 	/**
