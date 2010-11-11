@@ -8,7 +8,8 @@ package app;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.1
+ * @version 0.2
+ * @since 0.1
  */
 public class Rectangulo implements Comparable<Rectangulo>
 {
@@ -21,12 +22,20 @@ public class Rectangulo implements Comparable<Rectangulo>
 	 * Constructor de la clase Rectangulo.
 	 * Crea un rectangulo dado su alto y su ancho.
 	 */
-	public Rectangulo ()
+	public Rectangulo()
 	{
-		this.alto = alto;
-		this.ancho = ancho;
+		this.alto = 0;
+		this.ancho = 0;
+		this.area = 0;
 	}
 	
+	/**
+	 * Constructor de la clase Rectangulo.
+	 * Crea un rectangulo dado su alto y su ancho.
+	 * 
+	 * @param alto - Alto del rectangulo
+	 * @param ancho - Ancho del rectangulo
+	 */
 	public Rectangulo(int alto, int ancho) {
 		this.alto = alto;
 		this.ancho = ancho;

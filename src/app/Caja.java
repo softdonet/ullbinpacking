@@ -1,8 +1,9 @@
 package app;
 
 import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.HashMap;
+//import java.util.TreeSet;
 
 /**
  * Clase con los datos necesarios para representar un contenedor.
@@ -12,7 +13,8 @@ import java.util.HashMap;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.1
+ * @version 0.2
+ * @since 0.1
  */
 
 public class Caja 
@@ -25,6 +27,17 @@ public class Caja
 	
 	/**
 	 * Constructor para la clase Caja
+	 * Cota - Altura maxima  -------------
+	 *                       |           |
+	 *                       |           |
+	 *                       |           |
+	 *      P: (0,2) C: 3 -> -------------
+	 *                       |     |     |
+	 *                       |     | <-  | P: (2,0) C: 2
+	 *                       -------------
+	 * 
+	 * @param alto - Alto de la caja
+	 * @param ancho - Ancho de la caja
 	 */
 	public Caja(int alto, int ancho) {
 		this.alto = alto;
@@ -34,31 +47,37 @@ public class Caja
 		RecIn = new ArrayList<Rectangulo>();
 		
 		PuntoCota = new HashMap<Punto, Integer>();
-		PuntoCota.put(new Punto(0,0), alto);
+		PuntoCota.put(new Punto(), alto);
+	}
+
+	/**
+	 * Metodo que devuelve el area de la caja
+	 * 
+	 * @return area - Area de la caja
+	 */
+	public int getArea() {
+		return area;
 	}
 
 	/**
 	 * Añade los puntos libres que se generan al añadir un rectangulo 
 	 * en el contenedor
+	 * 
+	 * @param puntoRec - Punto donde se va a colocar el rectangulo
+	 * @param altoRec - Alto del rectangulo
+	 * @param anchoRec - Ancho del rectangulo
 	 */
 	public void AddPuntosLibres(Punto puntoRec, int altoRec, int anchoRec) {
 		if ((puntoRec.getY() + altoRec) < this.alto) {
-			PuntoCota.put(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto);
+			PuntoCota.put(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto - (puntoRec.getY() + altoRec));
 		}
 		
 		if ((puntoRec.getX() + anchoRec) < this.ancho) {
-			PuntoCota.put(new Punto(puntoRec.getX() + anchoRec, puntoRec.getY()), puntoRec.getY() + altoRec);
+			PuntoCota.put(new Punto(puntoRec.getX() + anchoRec, puntoRec.getY()), altoRec);
 		}
-	} // comprobar que esto esta bien
-	
-	
-	/**
-	 * Borra un punto ya ocupado
-	 */
-	// quizas no sea necesario
-	/*public void BorrarPuntoLibre(Punto p) {
-		this.PuntosLibres.remove(p);
-	}*/
+		
+		//TreeSet<Punto> auxPC = new TreeSet<Punto>(PuntoCota.keySet());
+	}
 	
 	/**
 	 * Ordena la lista de puntos libres
@@ -69,6 +88,8 @@ public class Caja
 	
 	/**
 	 * Introduce un rectangulo en el contenedor y genera dos puntos libres
+	 * 
+	 * @param r - Nuevo rectangulo a añadir
 	 */
 	public void NuevoRectangulo(Rectangulo r) {
 		RecIn.add(r);
@@ -77,16 +98,16 @@ public class Caja
 		
 		p = r.getPos();
 		
-		//PuntosLibres.remove(p);
-		
 		AddPuntosLibres(p, r.getAlto(), r.getAncho());
+		
+		PuntoCota.remove(p);
 	} 
 	
-	public boolean NoCabe() {
+	/*public boolean NoCabe() {
 		boolean toRet = true;
 		
 		return toRet;
-	}
+	}*/
 	
 	/**
 	 * Salida del contenido de la caja 

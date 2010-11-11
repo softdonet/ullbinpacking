@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
+/*import java.util.HashMap;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;*/
 
 
 /**
@@ -49,6 +53,24 @@ public class Problema
 		c.NuevoRectangulo(rr);
 		
 		System.out.println(c);
+		
+		/* Otra Prueba
+		HashMap<Punto, Integer> pc = new HashMap<Punto, Integer>();
+		
+		pc.put(new Punto(), 10);
+		pc.put(new Punto(4,3), 10);
+		pc.put(new Punto(2,4), 2);
+		
+		TreeSet<Punto> auxPC = new TreeSet<Punto>(pc.keySet());
+		
+		for (Iterator it = auxPC.iterator(); it.hasNext(); ) {
+			Punto p = (Punto)it.next();//new Punto((Punto)it.hasNext());
+			int cc = pc.get(p);
+			System.out.println("punto: " + p + "  cota: " + cc);
+		}
+		*/
+		
+		
 	}
 	
 	public ArrayList<Rectangulo> readFile (String fileName)
