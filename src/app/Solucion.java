@@ -44,22 +44,22 @@ public class Solucion
 	 * @param permType - Tipo de permutacion de datos.
 	 * @param size - Numero de rectangulos.
 	 */
-	public Solucion (int permType, int size, int altoCaja, int anchoCaja) {
+	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
 		cajas = new ArrayList<Caja>();
 		
 		switch (permType) {
 			case ALEATORIA:
-				permAleatoria(size);
+				permAleatoria(rec.size());
 				break;
 			case DETERMINISTA:
-				permDeterminista(size);
+				permDeterminista(rec.size());
 				break;
 			case MIXTA:
-				permMixta(size);
+				permMixta(rec.size());
 				break;
 		}
 		
-		//cajas = FiniteFirstFit(altoCaja, anchoCaja);
+		FiniteFirstFit(altoCaja, anchoCaja, rec);
 		
 		
 	}
@@ -137,23 +137,30 @@ public class Solucion
 		array[posOne] = temp;
 	}
 	
-	public void FiniteFirsFit(int altoCaja, int anchoCaja) {
+	public void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		cajas.add(new Caja(altoCaja, anchoCaja));
 		
 		for (int i = 0; i < permutacion.length; i++) {
-			
-		}
-		
-		//while 
-		/*for (int i = 0; i < cajas.size(); i++) {
-			Caja bin = cajas.get(i);
-			
-			if ((i == cajas.size() - 1) && (bin.NoCabe())) {
+			while(!RectanguloIntroducido(rec.get(permutacion[i]))) {
 				cajas.add(new Caja(altoCaja, anchoCaja));
 			}
-		}*/
+		}
+	}
+	
+	public boolean RectanguloIntroducido(Rectangulo r) {
+		boolean toRet = false;
 		
-		cajas.add(new Caja(altoCaja, anchoCaja));
+		for (int i = 0; i < cajas.size(); i++) {
+			if (2 == 4) { // aqui algun metodo que compruebe si cabe en esa caja y le meta el punto al rectangulo
+				cajas.get(i).NuevoRectangulo(r);
+				
+				toRet = true;
+				
+				break;
+			}
+		}
+		
+		return toRet;
 	}
 	
 	/**

@@ -36,7 +36,7 @@ public class Problema
 		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
 	    Collections.sort(rec, Collections.reverseOrder());
 		
-		s = new Solucion(Solucion.DETERMINISTA, rec.size(), altoCaja, anchoCaja);
+		s = new Solucion(Solucion.DETERMINISTA, rec, altoCaja, anchoCaja);
 		
 		// Prueba
 		Caja c = new Caja(this.altoCaja, this.anchoCaja);
@@ -130,7 +130,7 @@ public class Problema
         return new ArrayList<Rectangulo> ();
 	}
 	
-	public Solucion getSolucion ()
+	public Solucion getSolucion()
 	{
 		return s;
 	}
