@@ -12,7 +12,8 @@ import java.util.Random;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.1
+ * @version 0.2
+ * @since 0.1
  */
 public class Solucion
 {
@@ -26,16 +27,21 @@ public class Solucion
 	private ArrayList<Caja> cajas;
 	private int permutacion[];
 	
-	
-	public Solucion() {
+	/**
+	 * Constructor dado el numero de rectangulos
+	 * 
+	 * @param size - Numero de rectangulos.
+	 */
+	public Solucion(int size) {
 		cajas = new ArrayList<Caja>();
+		permutacion = new int[size];
 	}
 	
 	/**
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
 	 * rectangulos.
 	 * 
-	 * @param genType - Tipo de permutacion de datos.
+	 * @param permType - Tipo de permutacion de datos.
 	 * @param size - Numero de rectangulos.
 	 */
 	public Solucion (int permType, int size, int altoCaja, int anchoCaja) {
@@ -55,16 +61,7 @@ public class Solucion
 		
 		//cajas = FiniteFirstFit(altoCaja, anchoCaja);
 		
-		cajas.add(new Caja(altoCaja, anchoCaja));
 		
-		//while 
-		/*for (int i = 0; i < cajas.size(); i++) {
-			Caja bin = cajas.get(i);
-			
-			if ((i == cajas.size() - 1) && (bin.NoCabe())) {
-				cajas.add(new Caja(altoCaja, anchoCaja));
-			}
-		}*/
 	}
 	
 	/**
@@ -156,7 +153,7 @@ public class Solucion
 			}
 		}*/
 		
-		
+		cajas.add(new Caja(altoCaja, anchoCaja));
 	}
 	
 	/**
