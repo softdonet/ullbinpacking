@@ -94,13 +94,9 @@ public class Caja
 	public void NuevoRectangulo(Rectangulo r) {
 		RecIn.add(r);
 		
-		Punto p = new Punto();
+		AddPuntosLibres(r.getPos(), r.getAlto(), r.getAncho());
 		
-		p = r.getPos();
-		
-		AddPuntosLibres(p, r.getAlto(), r.getAncho());
-		
-		PuntoCota.remove(p);
+		PuntoCota.remove(r.getPos());
 	} 
 	
 	/*public boolean NoCabe() {
