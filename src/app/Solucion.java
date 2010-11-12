@@ -140,32 +140,27 @@ public class Solucion
 	
 	public void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		cajas.add(new Caja(altoCaja, anchoCaja));
+		boolean introducido = false;
 		
 		for (int i = 0; i < permutacion.length; i++) {
-			while(!RectanguloIntroducido(rec.get(permutacion[i]))) {
+			for (int j = 0; j < cajas.size(); j++) {
+				if (CabeRectangulo(rec.get(permutacion[i]), cajas.get(j))) {
+					cajas.get(j).NuevoRectangulo(rec.get(permutacion[i]));
+					
+					introducido = true;
+					
+					break;
+				}
+			}
+			
+			if (!introducido) {
 				cajas.add(new Caja(altoCaja, anchoCaja));
-			}
-		}
-	}
-	
-	public boolean RectanguloIntroducido(Rectangulo r) {
-		boolean toRet = false;
-		
-		for (int i = 0; i < cajas.size(); i++) {
-			System.out.println("Caja: " + i);
-			System.out.println("p1: " + r.getPos());
-			if (CabeRectangulo(r, cajas.get(i))) {
-				System.out.println("p2: " + r.getPos());
-				System.out.println();
-				cajas.get(i).NuevoRectangulo(r);
 				
-				toRet = true;
-				
-				break;
+				cajas.get(cajas.size()).NuevoRectangulo(rec.get(permutacion[i]));
 			}
+			
+			introducido = false;
 		}
-		
-		return toRet;
 	}
 	
 	public boolean CabeRectangulo(Rectangulo r, Caja c) {
@@ -177,6 +172,7 @@ public class Solucion
 		for (Iterator<Punto> it = auxPC.iterator(); it.hasNext();) {
 			Punto p = (Punto)it.next(); 
 			int cota = pc.get(p);
+			
 			System.out.println("p libre: " + p + "  cota: " + cota);
 			
 			if ((r.getAlto() <= cota) && (r.getAncho() <= c.getAncho() - p.getX())) {
