@@ -125,6 +125,6 @@ public class Rectangulo implements Comparable<Rectangulo>
 	 */
 	public String toString ()
 	{
-		return new String ("[" + alto + ", " + ancho + "], Area = " + area);
+		return new String ("[" + ancho+ ", " + alto + "], Area = " + area);
 	}
 }
