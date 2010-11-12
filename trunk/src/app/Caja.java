@@ -50,6 +50,10 @@ public class Caja
 		PuntoCota.put(new Punto(), alto);
 	}
 
+	public int getAncho() {
+		return ancho;
+	}
+	
 	/**
 	 * Metodo que devuelve el area de la caja
 	 * 
@@ -59,6 +63,10 @@ public class Caja
 		return area;
 	}
 
+	public HashMap<Punto, Integer> getPuntoCota() {
+		return PuntoCota;
+	}
+	
 	/**
 	 * Añade los puntos libres que se generan al añadir un rectangulo 
 	 * en el contenedor
