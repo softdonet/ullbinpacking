@@ -38,7 +38,7 @@ public class Problema
 		
 		s = new Solucion(Solucion.DETERMINISTA, rec, altoCaja, anchoCaja);
 		
-		// Prueba
+		/*// Prueba
 		Caja c = new Caja(this.altoCaja, this.anchoCaja);
 		
 		Punto p1 = new Punto(0, 0);
@@ -52,7 +52,7 @@ public class Problema
 		c.NuevoRectangulo(r);
 		c.NuevoRectangulo(rr);
 		
-		System.out.println(c);
+		System.out.println(c);*/
 		
 		/* Otra Prueba
 		HashMap<Punto, Integer> pc = new HashMap<Punto, Integer>();

@@ -2,7 +2,10 @@ package app;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.TreeSet;
 
 /**
  * Clase con los datos necesarios para representar una solucion de Bin Packing.
@@ -60,8 +63,6 @@ public class Solucion
 		}
 		
 		FiniteFirstFit(altoCaja, anchoCaja, rec);
-		
-		
 	}
 	
 	/**
@@ -151,10 +152,37 @@ public class Solucion
 		boolean toRet = false;
 		
 		for (int i = 0; i < cajas.size(); i++) {
-			if (2 == 4) { // aqui algun metodo que compruebe si cabe en esa caja y le meta el punto al rectangulo
+			System.out.println("Caja: " + i);
+			System.out.println("p1: " + r.getPos());
+			if (CabeRectangulo(r, cajas.get(i))) {
+				System.out.println("p2: " + r.getPos());
+				System.out.println();
 				cajas.get(i).NuevoRectangulo(r);
 				
 				toRet = true;
+				
+				break;
+			}
+		}
+		
+		return toRet;
+	}
+	
+	public boolean CabeRectangulo(Rectangulo r, Caja c) {
+		boolean toRet = false;
+		
+		HashMap<Punto, Integer> pc = c.getPuntoCota();
+		TreeSet<Punto> auxPC = new TreeSet<Punto>(pc.keySet());
+		
+		for (Iterator<Punto> it = auxPC.iterator(); it.hasNext();) {
+			Punto p = (Punto)it.next(); 
+			int cota = pc.get(p);
+			System.out.println("p libre: " + p + "  cota: " + cota);
+			
+			if ((r.getAlto() <= cota) && (r.getAncho() <= c.getAncho() - p.getX())) {
+				toRet = true;
+				
+				r.setPos(p);
 				
 				break;
 			}
