@@ -143,10 +143,14 @@ public class Solucion
 		boolean introducido = false;
 		
 		for (int i = 0; i < permutacion.length; i++) {
+			System.out.println("rectangulo a meter:  " +rec.get(permutacion[i]));
+			
 			for (int j = 0; j < cajas.size(); j++) {
+				System.out.println("caja actual: " + j);
+				
 				if (CabeRectangulo(rec.get(permutacion[i]), cajas.get(j))) {
-					cajas.get(j).NuevoRectangulo(rec.get(permutacion[i]));
-					
+					cajas.get(j).NuevoRectangulo(rec.get(permutacion[i])); System.out.println("lo mete en la caja: " + j + "   rec: " + rec.get(permutacion[i]));
+					System.out.println();
 					introducido = true;
 					
 					break;
@@ -155,8 +159,9 @@ public class Solucion
 			
 			if (!introducido) {
 				cajas.add(new Caja(altoCaja, anchoCaja));
+				System.out.println("lo mete en la caja: " + (cajas.size() - 1) + "   rec: " + rec.get(permutacion[i]) + "\n");
 				
-				cajas.get(cajas.size()).NuevoRectangulo(rec.get(permutacion[i]));
+				cajas.get(cajas.size() - 1).NuevoRectangulo(rec.get(permutacion[i]));
 			}
 			
 			introducido = false;
@@ -178,6 +183,7 @@ public class Solucion
 			if ((r.getAlto() <= cota) && (r.getAncho() <= c.getAncho() - p.getX())) {
 				toRet = true;
 				
+				System.out.println("lo metio en p: " + p);
 				r.setPos(p);
 				
 				break;
