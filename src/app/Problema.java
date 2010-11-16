@@ -6,10 +6,6 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
-/*import java.util.HashMap;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;*/
 
 
 /**
@@ -20,6 +16,7 @@ import java.util.TreeSet;*/
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
+ * @version 0.3
  * @version 0.1
  */
 public class Problema
@@ -28,7 +25,12 @@ public class Problema
 	private int altoCaja; // H
 	private int anchoCaja; // W
 	private Solucion s;
-	
+
+	/**
+	 * Constructor de la clase Problema
+	 * 
+	 * @param fileName - Nombre del archivo
+	 */
 	public Problema(String fileName) 
 	{
 		this.rec = readFile(fileName);
@@ -36,43 +38,15 @@ public class Problema
 		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
 	    Collections.sort(rec, Collections.reverseOrder());
 		
-		s = new Solucion(Solucion.DETERMINISTA, rec, altoCaja, anchoCaja);
-		
-		/*// Prueba
-		Caja c = new Caja(this.altoCaja, this.anchoCaja);
-		
-		Punto p1 = new Punto(0, 0);
-		Punto p2 = new Punto(3, 0);
-		
-		Rectangulo r = new Rectangulo(3, 5);
-		Rectangulo rr = new Rectangulo(2, 7);
-		r.setPos(p1);
-		rr.setPos(p2);
-		
-		c.NuevoRectangulo(r);
-		c.NuevoRectangulo(rr);
-		
-		System.out.println(c);*/
-		
-		/* Otra Prueba
-		HashMap<Punto, Integer> pc = new HashMap<Punto, Integer>();
-		
-		pc.put(new Punto(), 10);
-		pc.put(new Punto(4,3), 10);
-		pc.put(new Punto(2,4), 2);
-		
-		TreeSet<Punto> auxPC = new TreeSet<Punto>(pc.keySet());
-		
-		for (Iterator it = auxPC.iterator(); it.hasNext(); ) {
-			Punto p = (Punto)it.next();//new Punto((Punto)it.hasNext());
-			int cc = pc.get(p);
-			System.out.println("punto: " + p + "  cota: " + cc);
-		}
-		*/
-		
-		
+		s = new Solucion(Solucion.ALEATORIA, rec, altoCaja, anchoCaja);
 	}
 	
+	/**
+	 * Metodo que devuelve un array de Retangulos despues de leerlos de un fichero
+	 * 
+	 * @param fileName - Nombre del archivo
+	 * @return ArrayList<Rectangulo> - Array de rectangulos
+	 */
 	public ArrayList<Rectangulo> readFile (String fileName)
 	{
         FileInputStream myStream = null;
@@ -130,11 +104,21 @@ public class Problema
         return new ArrayList<Rectangulo> ();
 	}
 	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
 	public Solucion getSolucion()
 	{
 		return s;
 	}
 	
+	/**
+	 * Metodo que resume en una cadena de caracteres el problema
+	 * 
+	 * @return String - Problema
+	 */
 	public String toString ()
 	{
 		String toRet = new String ("Caja: [" + anchoCaja + ", " + altoCaja + "]\n");

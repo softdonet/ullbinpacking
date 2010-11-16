@@ -2,10 +2,7 @@ package app;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Random;
-import java.util.TreeSet;
 
 /**
  * Clase con los datos necesarios para representar una solucion de Bin Packing.
@@ -15,7 +12,7 @@ import java.util.TreeSet;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.2
+ * @version 0.3
  * @since 0.1
  */
 public class Solucion
@@ -63,6 +60,10 @@ public class Solucion
 		}
 		
 		FiniteFirstFit(altoCaja, anchoCaja, rec);
+		
+		for (int i = 0; i < cajas.size(); i++) {
+			System.out.println("caja: " + i + "\n" + "\n" + cajas.get(i) + "\n" + "\n");
+		}
 	}
 	
 	/**
@@ -107,7 +108,7 @@ public class Solucion
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	private void permMixta (int size) // la dejamos o la quitamos
+	private void permMixta (int size) 
 	{
 		permutacion = new int[size];
 
@@ -138,19 +139,23 @@ public class Solucion
 		array[posOne] = temp;
 	}
 	
+	/**
+	 * Algoritmo de colocacion inicial de los rectangulos en una caja
+	 * tras obtener la permutacion inicial.
+	 * 
+	 * @param altoCaja - Alto de las cajas
+	 * @param anchoCaja - Ancho de las cajas
+	 * @param rec - Array de rectangulos a introducir
+	 */
 	public void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		cajas.add(new Caja(altoCaja, anchoCaja));
 		boolean introducido = false;
 		
 		for (int i = 0; i < permutacion.length; i++) {
-			System.out.println("rectangulo a meter:  " +rec.get(permutacion[i]));
-			
 			for (int j = 0; j < cajas.size(); j++) {
-				System.out.println("caja actual: " + j);
-				
-				if (CabeRectangulo(rec.get(permutacion[i]), cajas.get(j))) {
-					cajas.get(j).NuevoRectangulo(rec.get(permutacion[i])); System.out.println("lo mete en la caja: " + j + "   rec: " + rec.get(permutacion[i]));
-					System.out.println();
+				if (cajas.get(j).CabeRectangulo(rec.get(permutacion[i]))) {
+					cajas.get(j).NuevoRectangulo(rec.get(permutacion[i]));
+					
 					introducido = true;
 					
 					break;
@@ -158,9 +163,7 @@ public class Solucion
 			}
 			
 			if (!introducido) {
-				cajas.add(new Caja(altoCaja, anchoCaja));
-				System.out.println("lo mete en la caja: " + (cajas.size() - 1) + "   rec: " + rec.get(permutacion[i]) + "\n");
-				
+				cajas.add(new Caja(altoCaja, anchoCaja));				
 				cajas.get(cajas.size() - 1).NuevoRectangulo(rec.get(permutacion[i]));
 			}
 			
@@ -168,33 +171,12 @@ public class Solucion
 		}
 	}
 	
-	public boolean CabeRectangulo(Rectangulo r, Caja c) {
-		boolean toRet = false;
-		
-		HashMap<Punto, Integer> pc = c.getPuntoCota();
-		TreeSet<Punto> auxPC = new TreeSet<Punto>(pc.keySet());
-		
-		for (Iterator<Punto> it = auxPC.iterator(); it.hasNext();) {
-			Punto p = (Punto)it.next(); 
-			int cota = pc.get(p);
-			
-			System.out.println("p libre: " + p + "  cota: " + cota);
-			
-			if ((r.getAlto() <= cota) && (r.getAncho() <= c.getAncho() - p.getX())) {
-				toRet = true;
-				
-				System.out.println("lo metio en p: " + p);
-				r.setPos(p);
-				
-				break;
-			}
-		}
-		
-		return toRet;
-	}
+	
 	
 	/**
 	 * Metodo para resumir la informacion de una solucion en una cadena de caracteres.
+	 * 
+	 * @return String - Solucion
 	 */
 	public String toString ()
 	{

@@ -1,9 +1,7 @@
 package app;
 
 import java.util.ArrayList;
-//import java.util.Collections;
-import java.util.HashMap;
-//import java.util.TreeSet;
+import java.util.Collections;
 
 /**
  * Clase con los datos necesarios para representar un contenedor.
@@ -13,28 +11,19 @@ import java.util.HashMap;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.2
+ * @version 0.3
  * @since 0.1
  */
-
 public class Caja 
 {
 	private int alto;
 	private int ancho;
 	private int area;
-	private HashMap<Punto, Integer> PuntoCota;
+	private ArrayList<PuntoCota> PC;
 	private ArrayList<Rectangulo> RecIn;
 	
 	/**
 	 * Constructor para la clase Caja
-	 * Cota - Altura maxima  -------------
-	 *                       |           |
-	 *                       |           |
-	 *                       |           |
-	 *      P: (0,2) C: 3 -> -------------
-	 *                       |     |     |
-	 *                       |     | <-  | P: (2,0) C: 2
-	 *                       -------------
 	 * 
 	 * @param alto - Alto de la caja
 	 * @param ancho - Ancho de la caja
@@ -45,11 +34,15 @@ public class Caja
 		this.area = alto * ancho;
 		
 		RecIn = new ArrayList<Rectangulo>();
-		
-		PuntoCota = new HashMap<Punto, Integer>();
-		PuntoCota.put(new Punto(), alto);
+		PC = new ArrayList<PuntoCota>();
+		PC.add(new PuntoCota(new Punto(), alto));
 	}
 
+	/**
+	 * Metodo que devuelve el ancho de la caja
+	 * 
+	 * @return ancho - Ancho de la caja
+	 */
 	public int getAncho() {
 		return ancho;
 	}
@@ -63,8 +56,28 @@ public class Caja
 		return area;
 	}
 
-	public HashMap<Punto, Integer> getPuntoCota() {
-		return PuntoCota;
+	/**
+	 * Metodo que comprueba si cabe un rectangulo dentro de la caja
+	 * 
+	 * @param r - Rectangulo a introducir en la caja
+	 * @return boolean
+	 */
+	public boolean CabeRectangulo(Rectangulo r) {
+		boolean toRet = false;
+		
+		for (int i = 0; i < PC.size(); i++) {
+			Punto p = PC.get(i).getPunto();
+			
+			if ((r.getAlto() <= PC.get(i).getCota()) && (r.getAncho() <= this.ancho - p.getX())) {
+				toRet = true;
+				
+				r.setPos(p);
+				
+				break;
+			}
+		}
+		
+		return toRet;
 	}
 	
 	/**
@@ -72,57 +85,84 @@ public class Caja
 	 * en el contenedor
 	 * 
 	 * @param puntoRec - Punto donde se va a colocar el rectangulo
+	 * @param cota - Altura maxima del punto
 	 * @param altoRec - Alto del rectangulo
 	 * @param anchoRec - Ancho del rectangulo
 	 */
-	public void AddPuntosLibres(Punto puntoRec, int altoRec, int anchoRec) {
-		if ((puntoRec.getY() + altoRec) < this.alto) {
-			PuntoCota.put(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto - (puntoRec.getY() + altoRec));
+	public void AddPuntosLibres(Punto puntoRec, int cota, int altoRec, int anchoRec) {		
+		if (((puntoRec.getY() + altoRec) < this.alto) && (cota > altoRec)) {
+			if (puntoRec.getX() == 0) {
+				PC.add(new PuntoCota(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto - (puntoRec.getY() + altoRec)));
+			}
+			else {
+				Punto menor = new Punto(0, alto);
+				Punto igual = new Punto(0, alto);
+				int igualCota = alto;
+				
+				for (int i = 0; i < PC.size(); i++) {
+					if ((PC.get(i).getPunto().getY() == puntoRec.getY() + altoRec) && (PC.get(i).getPunto().getX() < puntoRec.getX())) {
+						igual = PC.get(i).getPunto();
+						igualCota = PC.get(i).getCota();
+					}
+					
+					if ((PC.get(i).getPunto().getY() > puntoRec.getY()) && (PC.get(i).getPunto().getY() != puntoRec.getY() + altoRec)) {
+						if (PC.get(i).getPunto().getY() < menor.getY()) {
+							menor = PC.get(i).getPunto();
+						}
+					}
+				}
+				
+				Punto nuevo = new Punto(puntoRec.getX(), puntoRec.getY() + altoRec);
+				
+				if ((igual.getY() == nuevo.getY()) && (igual.getX() < nuevo.getX()) && (igualCota == menor.getY() - (puntoRec.getY() + altoRec))) {
+					System.out.println("punto igual");
+				}
+				else {
+					PC.add(new PuntoCota(nuevo, menor.getY() - (puntoRec.getY() + altoRec)));
+				}
+			}
 		}
 		
 		if ((puntoRec.getX() + anchoRec) < this.ancho) {
-			PuntoCota.put(new Punto(puntoRec.getX() + anchoRec, puntoRec.getY()), altoRec);
+			PC.add(new PuntoCota(new Punto(puntoRec.getX() + anchoRec, puntoRec.getY()), altoRec));
 		}
 		
-		//TreeSet<Punto> auxPC = new TreeSet<Punto>(PuntoCota.keySet());
+		Collections.sort(PC);
 	}
 	
-	/**
-	 * Ordena la lista de puntos libres
-	 */
-	/*public void OrdenarPuntosLibres() {
-		Collections.sort(this.PuntosLibres);
-	}*/
 	
 	/**
-	 * Introduce un rectangulo en el contenedor y genera dos puntos libres
+	 * Introduce un rectangulo en el contenedor y genera los puntos libres
 	 * 
 	 * @param r - Nuevo rectangulo a añadir
 	 */
 	public void NuevoRectangulo(Rectangulo r) {
 		RecIn.add(r);
 		
-		AddPuntosLibres(r.getPos(), r.getAlto(), r.getAncho());
+		int pos = 0;
+		int cota = alto;
 		
-		PuntoCota.remove(r.getPos());
+		for (int i = 0; i < PC.size(); i++) {
+			if (PC.get(i).getPunto() == r.getPos()) {
+				pos = i;
+				cota = PC.get(i).getCota();
+				
+				break;
+			}
+		}
+		
+		PC.remove(PC.get(pos)); 
+		
+		AddPuntosLibres(r.getPos(), cota, r.getAlto(), r.getAncho());
 	} 
-	
-	/*public boolean NoCabe() {
-		boolean toRet = true;
-		
-		return toRet;
-	}*/
 	
 	/**
 	 * Salida del contenido de la caja 
+	 * 
+	 * @return String - Cadena de caracteres que muestra cada caja y los rectangulos introducidos en cada una
 	 */
-/*	public String toString() {
-		String toRet = new String("Puntos libres: " + this.PuntosLibres.size() + "\n");
-		
-		for (int i = 0; i < this.PuntosLibres.size(); i++)
-			toRet += this.PuntosLibres.get(i) + "\n";
-		
-		toRet += "\n";
+	public String toString() {
+		String toRet = new String();
 		
 		int matriz[][] = new int[ancho][alto];
 		
@@ -131,10 +171,11 @@ public class Caja
 				matriz[i][j] = 0;
 			}
 		}
-		
-		
+				
 		for (int i = 0; i < this.RecIn.size(); i++)
 			toRet += this.RecIn.get(i) + "\n";
+		
+		toRet += "\n";
 		
 		Rectangulo r = new Rectangulo();
 		
@@ -149,8 +190,6 @@ public class Caja
 				}
 			}
 		}
-			
-		
 		
 		
 		for (int j = 0; j < this.alto; j++) {
@@ -159,11 +198,10 @@ public class Caja
 			}
 			
 			toRet += "\n";
-		}
+		}	
 		
-		
-			
+		toRet += "\n";
 		
 		return toRet;
-	} */
+	} 
 }
