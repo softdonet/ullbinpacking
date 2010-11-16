@@ -8,7 +8,7 @@ package app;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.2
+ * @version 0.3
  * @since 0.1
  */
 public class Rectangulo implements Comparable<Rectangulo>
@@ -122,6 +122,8 @@ public class Rectangulo implements Comparable<Rectangulo>
 	
 	/**
 	 * Metodo para resumir la informacion de un rectangulo en una cadena de caracteres.
+	 * 
+	 * @return String - Cadena de caracteres con la informacion
 	 */
 	public String toString ()
 	{

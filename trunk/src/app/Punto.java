@@ -12,14 +12,14 @@ package app;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.2
+ * @version 0.3
  * @since 0.1
  */
 public class Punto implements Comparable<Punto>
 {
 	private int x;
 	private int y;
-	
+
 	/**
 	 * Constructor por defecto de la clase Punto.
 	 * Crea un punto situado en el origen de coordenadas.
