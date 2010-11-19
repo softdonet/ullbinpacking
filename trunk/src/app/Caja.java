@@ -56,6 +56,16 @@ public class Caja
 		return area;
 	}
 
+	public int getAreaRestante() {
+		int aux = 0; 
+		for (int i = 0; i < this.RecIn.size(); i++) {
+			Rectangulo r = RecIn.get(i);
+			aux = aux + r.getArea();
+		}
+		return aux;
+	}
+
+	
 	/**
 	 * Metodo que comprueba si cabe un rectangulo dentro de la caja
 	 * 
@@ -200,6 +210,13 @@ public class Caja
 			toRet += "\n";
 		}	
 		
+		toRet += "\n";
+		
+		int ocupa = (getAreaRestante() * 100) / area;
+			
+		toRet += "La caja tiene ocupado un ";
+		toRet += ocupa;
+		toRet += "% de su area total";
 		toRet += "\n";
 		
 		return toRet;
