@@ -180,8 +180,22 @@ public class Solucion
 	 */
 	public String toString ()
 	{
-		String toRet = new String ("Permutation: ");
+		String toRet = new String ();
+		int suma = 0;
+		int suma1 = 0;
+		for (int i = 0; i < cajas.size(); i++){
+			Caja c = cajas.get(i);
+			suma = suma + c.getArea();
+			suma1 = suma1 + c.getAreaRestante();
+		}
+		int aux = (suma1 * 100)/suma;
+		toRet += "Se han utilizado un total de ";
+		toRet += cajas.size() + " cajas";
+		toRet += "\n";
+		toRet += "Con un espacio total ocupado del ";
+		toRet += aux + "%" + "\n" + "\n";
 		
+		toRet += "Pemutation: ";
 		for (int i = 0; i < permutacion.length; i++)
 			toRet += permutacion[i] + " ";
 		
