@@ -26,6 +26,7 @@ public class Solucion
 	
 	private ArrayList<Caja> cajas;
 	private int permutacion[];
+	private int AreaOcupada;
 	
 	/**
 	 * Constructor dado el numero de rectangulos
@@ -35,6 +36,7 @@ public class Solucion
 	public Solucion(int size) {
 		cajas = new ArrayList<Caja>();
 		permutacion = new int[size];
+		AreaOcupada = 0;
 	}
 	
 	/**
@@ -139,6 +141,22 @@ public class Solucion
 		array[posOne] = temp;
 	}
 	
+	public int getAreaOcupada() {
+		return AreaOcupada;
+	}
+	
+	public int getAreaTotal() {
+		int aux = 0;
+		int auxc = 0;
+		for (int i = 0; i < cajas.size(); i++){
+			Caja c = cajas.get(i);
+			auxc = auxc + c.getArea();
+			aux = aux + c.getAreaRestante();			
+		}
+		aux = (aux *100)/ auxc;
+		return aux;
+	}
+	
 	/**
 	 * Algoritmo de colocacion inicial de los rectangulos en una caja
 	 * tras obtener la permutacion inicial.
@@ -169,6 +187,8 @@ public class Solucion
 			
 			introducido = false;
 		}
+		
+		AreaOcupada = getAreaTotal();
 	}
 	
 	
@@ -181,19 +201,11 @@ public class Solucion
 	public String toString ()
 	{
 		String toRet = new String ();
-		int suma = 0;
-		int suma1 = 0;
-		for (int i = 0; i < cajas.size(); i++){
-			Caja c = cajas.get(i);
-			suma = suma + c.getArea();
-			suma1 = suma1 + c.getAreaRestante();
-		}
-		int aux = (suma1 * 100)/suma;
+		
 		toRet += "Se han utilizado un total de ";
-		toRet += cajas.size() + " cajas";
-		toRet += "\n";
+		toRet += cajas.size() + " cajas" + "\n";
 		toRet += "Con un espacio total ocupado del ";
-		toRet += aux + "%" + "\n" + "\n";
+		toRet += AreaOcupada + "%" + "\n" + "\n";
 		
 		toRet += "Pemutation: ";
 		for (int i = 0; i < permutacion.length; i++)
