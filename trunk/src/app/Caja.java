@@ -196,7 +196,7 @@ public class Caja
 			
 			for (int y = this.alto - 1 - p.getY(); y > (this.alto - 1 - p.getY()) - r.getAlto(); y--) {
 				for (int x = p.getX(); x < r.getAncho() + p.getX(); x++) {
-					matriz[x][y] = 1;
+					matriz[x][y] = i + 1;
 				}
 			}
 		}
