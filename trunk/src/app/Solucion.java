@@ -12,7 +12,7 @@ import java.util.Random;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.3
+ * @version 1.0
  * @since 0.1
  */
 public class Solucion
@@ -64,7 +64,7 @@ public class Solucion
 		FiniteFirstFit(altoCaja, anchoCaja, rec);
 		
 		for (int i = 0; i < cajas.size(); i++) {
-			System.out.println("caja: " + i + "\n" + "\n" + cajas.get(i) + "\n" + "\n");
+			System.out.println("Caja: " + i + "\n" + "\n" + cajas.get(i) + "\n" + "\n");
 		}
 	}
 	

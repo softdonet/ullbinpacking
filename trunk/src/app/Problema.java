@@ -16,7 +16,7 @@ import java.util.Collections;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.3
+ * @version 1.0
  * @version 0.1
  */
 public class Problema
