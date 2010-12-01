@@ -8,7 +8,7 @@ package app;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.3
+ * @version 1.0
  * @since 0.2
  */
 public class PuntoCota implements Comparable<PuntoCota>

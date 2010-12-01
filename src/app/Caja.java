@@ -11,7 +11,7 @@ import java.util.Collections;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 0.3
+ * @version 1.0
  * @since 0.1
  */
 public class Caja 
@@ -80,7 +80,7 @@ public class Caja
 			
 			if ((r.getAlto() <= PC.get(i).getCota()) && (r.getAncho() <= this.ancho - p.getX())) {
 				toRet = true;
-				
+
 				r.setPos(p);
 				
 				break;
@@ -99,7 +99,7 @@ public class Caja
 	 * @param altoRec - Alto del rectangulo
 	 * @param anchoRec - Ancho del rectangulo
 	 */
-	public void AddPuntosLibres(Punto puntoRec, int cota, int altoRec, int anchoRec) {		
+	public void AddPuntosLibres(Punto puntoRec, int cota, int altoRec, int anchoRec) {	
 		if (((puntoRec.getY() + altoRec) < this.alto) && (cota > altoRec)) {
 			if (puntoRec.getX() == 0) {
 				PC.add(new PuntoCota(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto - (puntoRec.getY() + altoRec)));
@@ -108,6 +108,7 @@ public class Caja
 				Punto menor = new Punto(0, alto);
 				Punto igual = new Punto(0, alto);
 				int igualCota = alto;
+				boolean cambio = false;
 				
 				for (int i = 0; i < PC.size(); i++) {
 					if ((PC.get(i).getPunto().getY() == puntoRec.getY() + altoRec) && (PC.get(i).getPunto().getX() < puntoRec.getX())) {
@@ -118,6 +119,7 @@ public class Caja
 					if ((PC.get(i).getPunto().getY() > puntoRec.getY()) && (PC.get(i).getPunto().getY() != puntoRec.getY() + altoRec)) {
 						if (PC.get(i).getPunto().getY() < menor.getY()) {
 							menor = PC.get(i).getPunto();
+							cambio = true;
 						}
 					}
 				}
@@ -128,7 +130,10 @@ public class Caja
 					System.out.println("punto igual");
 				}
 				else {
-					PC.add(new PuntoCota(nuevo, menor.getY() - (puntoRec.getY() + altoRec)));
+					if (cambio) 
+						PC.add(new PuntoCota(nuevo, menor.getY() - (puntoRec.getY() + altoRec)));
+					else 
+						PC.add(new PuntoCota(nuevo, cota - altoRec));
 				}
 			}
 		}
@@ -174,43 +179,56 @@ public class Caja
 	public String toString() {
 		String toRet = new String();
 		
-		int matriz[][] = new int[ancho][alto];
+		int matriz[][] = new int[alto][ancho];
 		
-		for (int i = 0; i < ancho; i++) {
-			for (int j = 0; j < alto; j++) {
-				matriz[i][j] = 0;
+		for (int i = 0; i < alto; i++) {
+			for (int j = 0; j < ancho; j++) {
+				matriz[i][j] = 64;
 			}
 		}
 				
-		for (int i = 0; i < this.RecIn.size(); i++)
-			toRet += this.RecIn.get(i) + "\n";
-		
+		toRet += "Rectangulos:" + "\n";
+		for (int i = 0; i < this.RecIn.size(); i++) {
+			toRet += (char)(i + 65) + " -> " + this.RecIn.get(i) + "  en el punto -> " + this.RecIn.get(i).getPos() +  "\n";
+		}
+			
 		toRet += "\n";
 		
 		Rectangulo r = new Rectangulo();
 		
 		for (int i = 0; i < this.RecIn.size(); i++) {
 			r = RecIn.get(i);
-			Punto p = new Punto();
-			p = r.getPos();
+			Punto p = r.getPos();
 			
-			for (int y = this.alto - 1 - p.getY(); y > (this.alto - 1 - p.getY()) - r.getAlto(); y--) {
-				for (int x = p.getX(); x < r.getAncho() + p.getX(); x++) {
-					matriz[x][y] = i + 1;
+			for (int fila = this.alto - 1 - p.getY(); fila > (this.alto - 1 - p.getY()) - r.getAlto(); fila--) {
+				for (int col = p.getX(); col < r.getAncho() + p.getX(); col++) {
+					matriz[fila][col] += i + 1;
 				}
 			}
+		} 
+		
+		
+		for (int j = 0; j < this.ancho + 2; j++) {
+			toRet += "#";
 		}
 		
+		toRet += "\n";
 		
-		for (int j = 0; j < this.alto; j++) {
-			for (int i = 0; i < this.ancho; i++) {
-				toRet += matriz[i][j];
+		for (int i = 0; i < this.alto; i++) {
+			toRet += "#";	
+			
+			for (int j = 0; j < this.ancho; j++) {
+				toRet += (char)(matriz[i][j]);
 			}
 			
-			toRet += "\n";
+			toRet += "#\n";
 		}	
 		
-		toRet += "\n";
+		for (int j = 0; j < this.ancho + 2; j++) {
+			toRet += "#";
+		}
+		
+		toRet += "\n\n";
 		
 		int ocupa = (getAreaRestante() * 100) / area;
 			
