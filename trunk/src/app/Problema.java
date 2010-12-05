@@ -21,10 +21,9 @@ import java.util.Collections;
  */
 public class Problema
 {
-	private ArrayList<Rectangulo> rec;
-	private int altoCaja; // H
-	private int anchoCaja; // W
-	private Solucion s;
+	private ArrayList<Rectangulo> Rec;
+	private int AltoCaja; // H
+	private int AnchoCaja; // W
 
 	/**
 	 * Constructor de la clase Problema
@@ -33,12 +32,22 @@ public class Problema
 	 */
 	public Problema(String fileName) 
 	{
-		this.rec = readFile(fileName);
+		this.Rec = readFile(fileName);
 		
 		// Preordenacion de rectangulos. Sin ella no funciona la permutacion determinista.
-	    Collections.sort(rec, Collections.reverseOrder());
-		
-		s = new Solucion(Solucion.ALEATORIA, rec, altoCaja, anchoCaja);
+	    Collections.sort(Rec, Collections.reverseOrder());
+	}
+	
+	public ArrayList<Rectangulo> getRectangulos() {
+		return Rec;
+	}
+	
+	public int getAltoCaja() {
+		return AltoCaja;
+	}
+	
+	public int getAnchoCaja() {
+		return AnchoCaja;
 	}
 	
 	/**
@@ -60,9 +69,9 @@ public class Problema
                 myTokenizer = new StreamTokenizer(myReader);
                 
                 myTokenizer.nextToken();
-                anchoCaja = (int)myTokenizer.nval;
+                AnchoCaja = (int)myTokenizer.nval;
                 myTokenizer.nextToken();
-                altoCaja = (int)myTokenizer.nval;
+                AltoCaja = (int)myTokenizer.nval;
                 
                 myTokenizer.nextToken();
                 int n = (int)myTokenizer.nval;
@@ -105,26 +114,17 @@ public class Problema
 	}
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
-	 * 
-	 * @return Solucion - Solucion del problema
-	 */
-	public Solucion getSolucion()
-	{
-		return s;
-	}
-	
-	/**
 	 * Metodo que resume en una cadena de caracteres el problema
 	 * 
 	 * @return String - Problema
 	 */
 	public String toString ()
 	{
-		String toRet = new String ("Caja: [" + anchoCaja + ", " + altoCaja + "]\n");
+		String toRet = new String ("Caja:\n[" + this.AnchoCaja + ", " + this.AltoCaja + "], Area: " + (this.AltoCaja * this.AnchoCaja) + "\n\n");
 		
-		for (int i = 0; i < rec.size (); i++)
-			toRet += rec.get (i) + "\n";
+		toRet += "Rectangulos:\n";
+		for (int i = 0; i < Rec.size(); i++)
+			toRet += Rec.get(i) + "\n";
 		
 		return toRet;
 	}

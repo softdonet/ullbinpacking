@@ -1,12 +1,20 @@
 package app;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-public class Heuristica {
-
+public class Heuristica 
+{
 	/**
 	 * Constantes para indicar el tipo de heur’stica a utilizar
 	 */
+	
+	/**
+	 * Criterios de parada
+	 */
+	public static final int NoMejora = 0;
+	public static final int NVeces = 1;
 	
 	/**
 	 * Busquedas por entornos
@@ -15,11 +23,7 @@ public class Heuristica {
 	/*public static final int DETERMINISTA = 1;
 	public static final int MIXTA = 2;*/
 	
-	/**
-	 * Criterios de parada
-	 */
-	
-	private Problema problema;
+	private Problema Problema;
 	private Solucion MejorSolucion;
 	
 	/**
@@ -29,12 +33,37 @@ public class Heuristica {
 	 * @param permType - Tipo de heuristica.
 	 * @param size 
 	 */
-	public Heuristica(int tipoHeuristica, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
-		problema = new Problema("./datasets/mod3.dat");
+	public Heuristica(int tipoHeuristica, Problema p) {
+		Problema = p; 
 		
 		switch (tipoHeuristica) {
 			case BAP:
-				BAP();
+				InputStreamReader isr = new InputStreamReader(System.in);
+				BufferedReader br = new BufferedReader(isr);
+				
+				System.out.println("Busqueda aleatoria pura");
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				int veces = 0;
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				System.out.println("Introduzca el criterio a utilizar para la parada");
+				System.out.println("0 - NoMejora: No mejora la solucion optima en n-ejecuciones");
+				System.out.println("1 - NVeces: Ejecutar N-veces");
+				System.out.print("Criterio: ");
+				int criterio = 0;
+				try {
+					criterio = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				BAP(criterio, veces);
 				break;
 			/*case DETERMINISTA:
 				permDeterminista(rec.size());
@@ -45,21 +74,47 @@ public class Heuristica {
 		}
 	}
 	
-	public void BAP() {
-		int clembuterol = 0;
+	public void BAP(int criterio, int veces) {
+		int clembuterol = veces;
 		
-		Solucion solInicial = new Solucion(Solucion.ALEATORIA, problema, problema, problema);
-		MejorSolucion = solInicial;
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(), Problema.getAnchoCaja());
+
+		this.MejorSolucion = solInicial;
+		
+		System.out.println("---------triple-------");
+		System.out.println(MejorSolucion);
 		
 		do {
-			Solucion solActual = new Solucion(Solucion.ALEATORIA, problema, problema, problema);
+			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(), Problema.getAnchoCaja());
 			
-			if () {
-		} while(clembuterol > NoMejora);
-	GENERA(Soluci—n Actual); 
-	if Objetivo(Soluci—n Actual) < Objetivo(MejorSoluci—n) then 
-	Mejor Soluci—n := Soluci—n Actual; 
-	until (criterio de parada);
-	end
+			System.out.println("---------XXX-------");
+			System.out.println(solActual);
+			
+			if (solActual.compareTo(this.MejorSolucion) < 0) {
+				System.out.println("hola");
+				this.MejorSolucion.clear();
+				this.MejorSolucion = solActual;
+				
+				if (criterio == NoMejora) {
+					clembuterol = veces;
+				}
+			}
+			
+			clembuterol--;
+			
+		} while(clembuterol > 0);
+
+		System.out.println("---------mostro-------");
+		System.out.println(MejorSolucion);
 	}
+		
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public Solucion getSolucion()
+	{
+		return MejorSolucion;
+	}	
 }

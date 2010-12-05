@@ -116,7 +116,8 @@ public class Caja
 						igualCota = PC.get(i).getCota();
 					}
 					
-					if ((PC.get(i).getPunto().getY() > puntoRec.getY()) && (PC.get(i).getPunto().getY() != puntoRec.getY() + altoRec)) {
+					if ((PC.get(i).getPunto().getY() > puntoRec.getY()) && (PC.get(i).getPunto().getY() != puntoRec.getY() + altoRec)
+					    && (PC.get(i).getPunto().getY() <= cota + puntoRec.getY())) {
 						if (PC.get(i).getPunto().getY() < menor.getY()) {
 							menor = PC.get(i).getPunto();
 							cambio = true;
@@ -196,6 +197,7 @@ public class Caja
 		
 		Rectangulo r = new Rectangulo();
 		
+		// Hay fallos aun
 		for (int i = 0; i < this.RecIn.size(); i++) {
 			r = RecIn.get(i);
 			Punto p = r.getPos();

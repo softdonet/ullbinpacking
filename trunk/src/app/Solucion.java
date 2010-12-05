@@ -15,7 +15,7 @@ import java.util.Random;
  * @version 1.0
  * @since 0.1
  */
-public class Solucion
+public class Solucion implements Comparable<Solucion>
 {
 	/**
 	 * Constantes para indicar el tipo de generacion de solucion inicial
@@ -24,18 +24,20 @@ public class Solucion
 	public static final int DETERMINISTA = 1;
 	public static final int MIXTA = 2;
 	
-	private ArrayList<Caja> cajas;
-	private int permutacion[];
+	private ArrayList<Caja> Cajas;
+	private int Permutacion[];
+	private int Objetivo;
 	private int AreaOcupada;
-	
+
 	/**
 	 * Constructor dado el numero de rectangulos
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	public Solucion(int size) {
-		cajas = new ArrayList<Caja>();
-		permutacion = new int[size];
+	public Solucion() {
+		Cajas = new ArrayList<Caja>();
+		Permutacion = null;
+		Objetivo = 0;
 		AreaOcupada = 0;
 	}
 	
@@ -49,7 +51,7 @@ public class Solucion
 	 * @param anchoCaja - Tama–o del ancho de la caja
 	 */
 	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
-		cajas = new ArrayList<Caja>();
+		Cajas = new ArrayList<Caja>();
 		
 		switch (permType) {
 			case ALEATORIA:
@@ -64,10 +66,6 @@ public class Solucion
 		}
 		
 		FiniteFirstFit(altoCaja, anchoCaja, rec);
-		
-		for (int i = 0; i < cajas.size(); i++) {
-			System.out.println("Caja: " + i + "\n" + "\n" + cajas.get(i) + "\n" + "\n");
-		}
 	}
 	
 	/**
@@ -76,9 +74,8 @@ public class Solucion
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	private void permAleatoria (int size)
-	{
-		permutacion = new int[size];
+	private void permAleatoria (int size) {
+		Permutacion = new int[size];
 		ArrayList<Integer> toMix = new ArrayList<Integer>();
 
 		for (int i = 0; i < size; i++)
@@ -87,7 +84,7 @@ public class Solucion
 		Collections.shuffle(toMix);
 
 		for (int i = 0; i < size; i++)
-			permutacion[i] = toMix.get(i);
+			Permutacion[i] = toMix.get(i);
 	}
 	
 	/**
@@ -97,12 +94,11 @@ public class Solucion
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	private void permDeterminista(int size)
-	{
-		permutacion = new int[size];
+	private void permDeterminista(int size) {
+		Permutacion = new int[size];
 
 		for (int i = 0; i < size; i++)
-			permutacion[i] = i;
+			Permutacion[i] = i;
 	}
 	
 	/**
@@ -112,19 +108,18 @@ public class Solucion
 	 * 
 	 * @param size - Numero de rectangulos.
 	 */
-	private void permMixta (int size) 
-	{
-		permutacion = new int[size];
+	private void permMixta (int size) {
+		Permutacion = new int[size];
 
 		for (int i = 0; i < size; i++)
-			permutacion[i] = i;
+			Permutacion[i] = i;
 
 		for (int i = 0; (3 + i) < size; i++)
 		{
 			Random RNG = new Random(System.nanoTime());
 			int j = RNG.nextInt(3);
 
-			swap(permutacion, i, j + i);
+			swap(Permutacion, i, j + i);
 		}
 	}
 	
@@ -136,8 +131,7 @@ public class Solucion
 	 * @param posOne - Posicion del primer elemento a intercambiar.
 	 * @param posTwo - Posicion del segundo elemento a intercambiar.
 	 */
-	private void swap (int array[], int posOne, int posTwo)
-	{
+	private void swap (int array[], int posOne, int posTwo) {
 		int temp = array[posTwo];
 		array[posTwo] = array[posOne];
 		array[posOne] = temp;
@@ -147,11 +141,38 @@ public class Solucion
 		return AreaOcupada;
 	}
 	
-	public int getAreaTotal() {
+	public void setAreaOcupada(int areaOcupada) {
+		AreaOcupada = areaOcupada;
+	}
+	
+	public ArrayList<Caja> getCajas() {
+		return Cajas;
+	}
+
+	public void setCajas(ArrayList<Caja> cajas) {
+		this.Cajas = cajas;
+	}
+	public int[] getPermutacion() {
+		return Permutacion;
+	}
+
+	public void setPermutacion(int[] permutacion) {
+		this.Permutacion = permutacion;
+	}
+	
+	public int getFObjetivo() {
+		return Objetivo;
+	}
+
+	public void setFObjetivo(int objetivo) {
+		Objetivo = objetivo;
+	}
+	
+	public int AreaTotal() {
 		int aux = 0;
 		int auxc = 0;
-		for (int i = 0; i < cajas.size(); i++){
-			Caja c = cajas.get(i);
+		for (int i = 0; i < Cajas.size(); i++){
+			Caja c = Cajas.get(i);
 			auxc = auxc + c.getArea();
 			aux = aux + c.getAreaRestante();			
 		}
@@ -168,13 +189,13 @@ public class Solucion
 	 * @param rec - Array de rectangulos a introducir
 	 */
 	public void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
-		cajas.add(new Caja(altoCaja, anchoCaja));
+		Cajas.add(new Caja(altoCaja, anchoCaja));
 		boolean introducido = false;
 		
-		for (int i = 0; i < permutacion.length; i++) {
-			for (int j = 0; j < cajas.size(); j++) {
-				if (cajas.get(j).CabeRectangulo(rec.get(permutacion[i]))) {
-					cajas.get(j).NuevoRectangulo(rec.get(permutacion[i]));
+		for (int i = 0; i < Permutacion.length; i++) {
+			for (int j = 0; j < Cajas.size(); j++) {
+				if (Cajas.get(j).CabeRectangulo(rec.get(Permutacion[i]))) {
+					Cajas.get(j).NuevoRectangulo(rec.get(Permutacion[i]));
 					
 					introducido = true;
 					
@@ -183,35 +204,57 @@ public class Solucion
 			}
 			
 			if (!introducido) {
-				cajas.add(new Caja(altoCaja, anchoCaja));				
-				cajas.get(cajas.size() - 1).NuevoRectangulo(rec.get(permutacion[i]));
+				Cajas.add(new Caja(altoCaja, anchoCaja));				
+				Cajas.get(Cajas.size() - 1).NuevoRectangulo(rec.get(Permutacion[i]));
 			}
 			
 			introducido = false;
 		}
 		
-		AreaOcupada = getAreaTotal();
+		this.AreaOcupada = AreaTotal();
+		this.Objetivo = Cajas.size();
 	}
 	
+	public void clear() {
+		this.AreaOcupada = 0;
+		//this.Cajas.clear();
+		this.Objetivo = 0;
+		//this.Permutacion = null;
+	}
 	
-	
+	/**
+	 * Metodo que compara dos soluciones y determina cual es el mayor en funcion
+	 * de su valor de la F. Objetivo y su area total ocupada.
+	 * 
+	 * @param s - Solucion a comparar.
+	 * @return 1, 0 o -1 en funcion de si la solucion es
+	 * mayor, igual o menor la solucion comparada.
+	 */
+	public int compareTo(Solucion s)
+	{
+		return ((Integer)Objetivo).compareTo(s.getFObjetivo());
+	}
+
 	/**
 	 * Metodo para resumir la informacion de una solucion en una cadena de caracteres.
 	 * 
 	 * @return String - Solucion
 	 */
-	public String toString ()
-	{
-		String toRet = new String ();
+	public String toString () {
+		String toRet = new String ("\n\nSolucion\n\n");
+		
+		for (int i = 0; i < this.Cajas.size(); i++) {
+			toRet += "Caja: " + i + "\n" + "\n" + this.Cajas.get(i) + "\n" + "\n";
+		}
 		
 		toRet += "Se han utilizado un total de ";
-		toRet += cajas.size() + " cajas" + "\n";
+		toRet += this.Objetivo + " cajas" + "\n";
 		toRet += "Con un espacio total ocupado del ";
-		toRet += AreaOcupada + "%" + "\n" + "\n";
+		toRet += this.AreaOcupada + "%" + "\n" + "\n";
 		
-		toRet += "Pemutation: ";
-		for (int i = 0; i < permutacion.length; i++)
-			toRet += permutacion[i] + " ";
+		toRet += "Pemutacion: ";
+		for (int i = 0; i < this.Permutacion.length; i++)
+			toRet += this.Permutacion[i] + " ";
 		
 		toRet += "\n";
 		
