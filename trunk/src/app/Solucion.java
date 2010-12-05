@@ -44,7 +44,9 @@ public class Solucion
 	 * rectangulos.
 	 * 
 	 * @param permType - Tipo de permutacion de datos.
-	 * @param size - Numero de rectangulos.
+	 * @param rec - Array de rectangulos
+	 * @param altoCaja - Tama–o del alto de la caja
+	 * @param anchoCaja - Tama–o del ancho de la caja
 	 */
 	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
 		cajas = new ArrayList<Caja>();
