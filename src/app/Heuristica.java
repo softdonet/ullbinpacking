@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 public class Heuristica 
 {
 	/**
-	 * Constantes para indicar el tipo de heur�stica a utilizar
+	 * Constantes para indicar el tipo de heurística a utilizar
 	 */
 	
 	/**
@@ -31,8 +31,8 @@ public class Heuristica
 	 * Busquedas por entornos
 	 */
 	public static final int BAP = 0;              // Busqueda aleatoria pura
-	/*public static final int DETERMINISTA = 1;
-	public static final int MIXTA = 2;*/
+	public static final int BRA = 1;			  // Busqueda por recorrido al azar
+	public static final int BL = 2;				  // Busqueda local
 	
 	private Problema Problema;
 	private Solucion MejorSolucion;
@@ -77,6 +77,12 @@ public class Heuristica
 				
 				BAP(criterio, veces);
 				break;
+				
+			case BRA:
+				break;
+				
+			case BL:
+				break;
 		}
 		
 		System.out.println("Solucion\n");
@@ -86,12 +92,14 @@ public class Heuristica
 	public void BAP(int criterio, int veces) {
 		int clembuterol = veces;
 		
-		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(), Problema.getAnchoCaja());
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+				Problema.getAltoCaja(), Problema.getAnchoCaja());
 
 		this.MejorSolucion = solInicial;
 		
 		do {
-			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(), Problema.getAnchoCaja());
+			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+					Problema.getAltoCaja(), Problema.getAnchoCaja());
 			
 			if (solActual.compareTo(this.MejorSolucion) < 0) {
 				this.MejorSolucion = solActual;
@@ -105,6 +113,44 @@ public class Heuristica
 			
 		} while(clembuterol > 0);
 	}
+	
+	public void BRA() {
+		int clembuterol = 0;
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+				Problema.getAltoCaja(), Problema.getAnchoCaja());
+		
+		this.MejorSolucion = solInicial;
+		
+		do {
+			// generar vecinos ?? GENERA_VECINA(Solución Actual);
+			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+					Problema.getAltoCaja(), Problema.getAnchoCaja());
+			
+			if (solActual.compareTo(this.MejorSolucion) < 0) {
+				this.MejorSolucion = solActual;
+			}
+			
+			clembuterol--;
+			
+		} while(clembuterol > 0); // criterio de parada ??
+	}
+	
+	public void BL() {
+	/*
+	 * procedure Búsqueda Local(Var Solución Actual: Solución);
+	begin
+	GENERA(Solución Actual); 
+	 repeat
+	GENERA(Solución Vecina / Objetivo(Solución Vecina) < 
+	                                      Objetivo(Solución Actual)); 
+	Solución Actual := Solución Vecina; 
+	until (Objetivo(Solución Vecina)  Objetivo(Solución Actual),       
+	                                                  Solución Vecina);	
+	 */
+	}
+	
+	
+
 		
 	/**
 	 * Metodo que devuelve la solucion del problema
