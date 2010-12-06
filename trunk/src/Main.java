@@ -18,7 +18,7 @@ public class Main
 		System.out.println("Problema a resolver:");
 		System.out.println();
 		
-		Problema p = new Problema("./datasets/modelo.dat");
+		Problema p = new Problema("./datasets/mod3.dat");
 		System.out.println(p);
 		
 		System.out.println("Introduzca la heuristica que desea utilizar para obtener una solucion optima");
@@ -26,7 +26,7 @@ public class Main
 		System.out.println("0 - BAP: Busqueda aleatoria pura");
 		//System.out.println("1 - NVeces: Ejecutar N-veces");
 		//System.out.println();
-		System.out.print("Opcion: ");
+		System.out.print("Opcion: "); 
 		int opcion = 0;
 		try {
 			opcion = Integer.parseInt(br.readLine());

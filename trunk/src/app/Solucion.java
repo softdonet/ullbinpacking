@@ -180,6 +180,8 @@ public class Solucion implements Comparable<Solucion>
 		return aux;
 	}
 	
+	
+	
 	/**
 	 * Algoritmo de colocacion inicial de los rectangulos en una caja
 	 * tras obtener la permutacion inicial.
@@ -213,13 +215,6 @@ public class Solucion implements Comparable<Solucion>
 		
 		this.AreaOcupada = AreaTotal();
 		this.Objetivo = Cajas.size();
-	}
-	
-	public void clear() {
-		this.AreaOcupada = 0;
-		//this.Cajas.clear();
-		this.Objetivo = 0;
-		//this.Permutacion = null;
 	}
 	
 	/**
