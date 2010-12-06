@@ -4,6 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Clase con los datos necesarios para representar una solucion de Bin Packing.
+ * 
+ * @author Eduardo Perez Mederos
+ * @author Miguel Monterrey Varela
+ * @author Jaime Gonzalez Valdes
+ * @author Oscar Mateos Lopez
+ * 
+ * @version 1.0
+ * @since 1.0
+ */
 public class Heuristica 
 {
 	/**
@@ -34,7 +45,8 @@ public class Heuristica
 	 * @param size 
 	 */
 	public Heuristica(int tipoHeuristica, Problema p) {
-		Problema = p; 
+		Problema = p;
+		MejorSolucion = new Solucion();
 		
 		switch (tipoHeuristica) {
 			case BAP:
@@ -65,13 +77,10 @@ public class Heuristica
 				
 				BAP(criterio, veces);
 				break;
-			/*case DETERMINISTA:
-				permDeterminista(rec.size());
-				break;
-			case MIXTA:
-				permMixta(rec.size());
-				break;*/
 		}
+		
+		System.out.println("Solucion\n");
+		System.out.println(MejorSolucion);
 	}
 	
 	public void BAP(int criterio, int veces) {
@@ -81,18 +90,10 @@ public class Heuristica
 
 		this.MejorSolucion = solInicial;
 		
-		System.out.println("---------triple-------");
-		System.out.println(MejorSolucion);
-		
 		do {
 			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(), Problema.getAnchoCaja());
 			
-			System.out.println("---------XXX-------");
-			System.out.println(solActual);
-			
 			if (solActual.compareTo(this.MejorSolucion) < 0) {
-				System.out.println("hola");
-				this.MejorSolucion.clear();
 				this.MejorSolucion = solActual;
 				
 				if (criterio == NoMejora) {
@@ -103,9 +104,6 @@ public class Heuristica
 			clembuterol--;
 			
 		} while(clembuterol > 0);
-
-		System.out.println("---------mostro-------");
-		System.out.println(MejorSolucion);
 	}
 		
 	/**

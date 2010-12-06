@@ -39,7 +39,15 @@ public class Problema
 	}
 	
 	public ArrayList<Rectangulo> getRectangulos() {
-		return Rec;
+		ArrayList<Rectangulo> recs = new ArrayList<Rectangulo>();
+		
+		for (int i = 0; i < Rec.size(); i++) {
+			recs.add(new Rectangulo(Rec.get(i).getAlto(), Rec.get(i).getAncho()));
+		} 
+		
+		Collections.sort(recs, Collections.reverseOrder());
+		
+		return recs;
 	}
 	
 	public int getAltoCaja() {
