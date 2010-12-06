@@ -24,8 +24,8 @@ public class Main
 		System.out.println("Introduzca la heuristica que desea utilizar para obtener una solucion optima");
 		System.out.println("Busquedas por entornos:");
 		System.out.println("0 - BAP: Busqueda aleatoria pura");
-		//System.out.println("1 - NVeces: Ejecutar N-veces");
-		//System.out.println();
+		System.out.println("1 - BRA: Busqueda por recorrido al azar");
+		System.out.println("2 - BL: Busqueda local");
 		System.out.print("Opcion: "); 
 		int opcion = 0;
 		try {

@@ -102,7 +102,8 @@ public class Caja
 	public void AddPuntosLibres(Punto puntoRec, int cota, int altoRec, int anchoRec) {	
 		if (((puntoRec.getY() + altoRec) < this.alto) && (cota > altoRec)) {
 			if (puntoRec.getX() == 0) {
-				PC.add(new PuntoCota(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec), this.alto - (puntoRec.getY() + altoRec)));
+				PC.add(new PuntoCota(new Punto(puntoRec.getX(), puntoRec.getY() + altoRec),
+						this.alto - (puntoRec.getY() + altoRec)));
 			}
 			else {
 				Punto menor = new Punto(0, alto);
@@ -111,7 +112,8 @@ public class Caja
 				boolean cambio = false;
 				
 				for (int i = 0; i < PC.size(); i++) {
-					if ((PC.get(i).getPunto().getY() == puntoRec.getY() + altoRec) && (PC.get(i).getPunto().getX() < puntoRec.getX())) {
+					if ((PC.get(i).getPunto().getY() == puntoRec.getY() + altoRec) && 
+							(PC.get(i).getPunto().getX() < puntoRec.getX())) {
 						igual = PC.get(i).getPunto();
 						igualCota = PC.get(i).getCota();
 					}
@@ -127,7 +129,8 @@ public class Caja
 				
 				Punto nuevo = new Punto(puntoRec.getX(), puntoRec.getY() + altoRec);
 				
-				if ((igual.getY() == nuevo.getY()) && (igual.getX() < nuevo.getX()) && (igualCota == menor.getY() - (puntoRec.getY() + altoRec))) {
+				if ((igual.getY() == nuevo.getY()) && (igual.getX() < nuevo.getX()) && 
+						(igualCota == menor.getY() - (puntoRec.getY() + altoRec))) {
 					System.out.println("punto igual");
 				}
 				else {
@@ -190,7 +193,8 @@ public class Caja
 				
 		toRet += "Rectangulos:" + "\n";
 		for (int i = 0; i < this.RecIn.size(); i++) {
-			toRet += (char)(i + 65) + " -> " + this.RecIn.get(i) + "  en el punto -> " + this.RecIn.get(i).getPos() +  "\n";
+			toRet += (char)(i + 65) + " -> " + this.RecIn.get(i) + "  en el punto -> " + 
+			this.RecIn.get(i).getPos() +  "\n";
 		}
 			
 		toRet += "\n";

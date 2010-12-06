@@ -128,7 +128,8 @@ public class Problema
 	 */
 	public String toString ()
 	{
-		String toRet = new String ("Caja:\n[" + this.AnchoCaja + ", " + this.AltoCaja + "], Area: " + (this.AltoCaja * this.AnchoCaja) + "\n\n");
+		String toRet = new String ("Caja:\n[" + this.AnchoCaja + ", " + this.AltoCaja + "], Area: " +
+				(this.AltoCaja * this.AnchoCaja) + "\n\n");
 		
 		toRet += "Rectangulos:\n";
 		for (int i = 0; i < Rec.size(); i++)
