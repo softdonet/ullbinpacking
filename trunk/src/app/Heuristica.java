@@ -34,6 +34,11 @@ public class Heuristica
 	public static final int BRA = 1;			  // Busqueda por recorrido al azar
 	public static final int BL = 2;				  // Busqueda local
 	
+	/**
+	 * GRASP
+	 */
+	public static final int GRASP = 3;
+	
 	private Problema Problema;
 	private Solucion MejorSolucion;
 	
@@ -48,11 +53,11 @@ public class Heuristica
 		Problema = p;
 		MejorSolucion = new Solucion();
 		
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+		
 		switch (tipoHeuristica) {
 			case BAP:
-				InputStreamReader isr = new InputStreamReader(System.in);
-				BufferedReader br = new BufferedReader(isr);
-				
 				System.out.println("Busqueda aleatoria pura");
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				int veces = 0;
@@ -79,16 +84,24 @@ public class Heuristica
 				break;
 				
 			case BRA:
+				System.out.println("Busqueda aleatoria pura");
 				break;
 				
 			case BL:
+				System.out.println("Busqueda local");
+				break;
+				
+			case GRASP:
+				System.out.println("GRASP");
 				break;
 		}
-		
-		System.out.println("Solucion\n");
-		System.out.println(MejorSolucion);
 	}
 	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
 	public void BAP(int criterio, int veces) {
 		int clembuterol = veces;
 		
@@ -114,28 +127,42 @@ public class Heuristica
 		} while(clembuterol > 0);
 	}
 	
-	public void BRA() {
-		int clembuterol = 0;
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public void BRA(int criterio, int veces) {
+		int clembuterol = veces;
+		
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 				Problema.getAltoCaja(), Problema.getAnchoCaja());
 		
-		this.MejorSolucion = solInicial;
+		// aqui va a haber problemas modificar esto por las referencias
+		Solucion solActual = solInicial;
+		this.MejorSolucion = solActual;
 		
-		do {
-			// generar vecinos ?? GENERA_VECINA(Solución Actual);
-			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
-					Problema.getAltoCaja(), Problema.getAnchoCaja());
+		do {			
+			solActual = GeneraSolVecina(solActual);
 			
 			if (solActual.compareTo(this.MejorSolucion) < 0) {
-				this.MejorSolucion = solActual;
+				this.MejorSolucion = solActual; // posible fallo
+				
+				if (criterio == NoMejora) {
+					clembuterol = veces;
+				}
 			}
 			
 			clembuterol--;
-			
-		} while(clembuterol > 0); // criterio de parada ??
+		} while(clembuterol > 0);
 	}
 	
-	public void BL() {
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public void BL(Solucion s) {
 	/*
 	 * procedure Búsqueda Local(Var Solución Actual: Solución);
 	begin
@@ -149,8 +176,33 @@ public class Heuristica
 	 */
 	}
 	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public void GRASP() {
+		/*
+		 * Procedure GRASP
+			Begin
+  			Preprocesamiento
+			Repeat
+			Fase Constructiva(Solución);
+			PostProcesamiento(Solución);
+			Actualizar(Solución, MejorSolución);
+			Until (Criterio de parada);
+			End.
+		 */
+	}
 	
-
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public Solucion GeneraSolVecina(Solucion s) {
+		return s;
+	}
 		
 	/**
 	 * Metodo que devuelve la solucion del problema
@@ -160,5 +212,9 @@ public class Heuristica
 	public Solucion getSolucion()
 	{
 		return MejorSolucion;
-	}	
+	}
+	
+	public String toString() {
+		return new String("Solucion\n" + MejorSolucion + "\n");
+	}
 }

@@ -18,7 +18,7 @@ public class Main
 		System.out.println("Problema a resolver:");
 		System.out.println();
 		
-		Problema p = new Problema("./datasets/mod3.dat");
+		Problema p = new Problema("./datasets/mod5.dat");
 		System.out.println(p);
 		
 		System.out.println("Introduzca la heuristica que desea utilizar para obtener una solucion optima");
@@ -38,5 +38,6 @@ public class Main
 		System.out.println();
 		Heuristica h = new Heuristica(opcion, p);
 		
+		System.out.println(h);
 	}
 }
