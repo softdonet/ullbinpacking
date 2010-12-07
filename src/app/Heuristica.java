@@ -3,6 +3,7 @@ package app;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 /**
  * Clase con los datos necesarios para representar una solucion de Bin Packing.
@@ -18,14 +19,16 @@ import java.io.InputStreamReader;
 public class Heuristica 
 {
 	/**
-	 * Constantes para indicar el tipo de heurística a utilizar
-	 */
-	
-	/**
 	 * Criterios de parada
 	 */
-	public static final int NoMejora = 0;
-	public static final int NVeces = 1;
+	public static final int NOMEJORA = 0;
+	public static final int NVECES = 1;
+	
+	/**
+	 * Criterios de intercambio en permutacion solucion vecina
+	 */
+	public static final int SIMPLE = 0;			 // Se intercambian dos posiciones aleatoria
+	public static final int RODARP = 1;          // Se rueda tada la permutacion una posicion, dada una posicion aleatoria
 	
 	/**
 	 * Busquedas por entornos
@@ -55,12 +58,14 @@ public class Heuristica
 		
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
+		int veces = 0;
+		int criterio = 0;
+		int criterioSV = 0;
 		
 		switch (tipoHeuristica) {
 			case BAP:
 				System.out.println("Busqueda aleatoria pura");
 				System.out.print("Introduzca el numero de ejecuciones: ");
-				int veces = 0;
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
@@ -69,10 +74,10 @@ public class Heuristica
 				}
 				
 				System.out.println("Introduzca el criterio a utilizar para la parada");
-				System.out.println("0 - NoMejora: No mejora la solucion optima en n-ejecuciones");
-				System.out.println("1 - NVeces: Ejecutar N-veces");
+				System.out.println("0 - NOMEJORA: No mejora la solucion optima en n-ejecuciones");
+				System.out.println("1 - NVECES: Ejecutar N-veces");
 				System.out.print("Criterio: ");
-				int criterio = 0;
+				
 				try {
 					criterio = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
@@ -80,15 +85,62 @@ public class Heuristica
 					e.printStackTrace();
 				}
 				
-				BAP(criterio, veces);
+				this.MejorSolucion = BAP(criterio, veces);
 				break;
 				
 			case BRA:
-				System.out.println("Busqueda aleatoria pura");
+				System.out.println("Busqueda por recorrido al azar");
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				System.out.println("Introduzca el criterio a utilizar para la parada");
+				System.out.println("0 - NOMEJORA: No mejora la solucion optima en n-ejecuciones");
+				System.out.println("1 - NVECES: Ejecutar N-veces");
+				System.out.print("Criterio: ");
+				try {
+					criterio = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				System.out.println("Introduzca el criterio a utilizar para obtener la solucion vecina");
+				System.out.println("0 - SIMPLE: Intercambia deos posiciones aleatorias en la permutacion");
+				System.out.println("1 - RODARP: Toma una posicion aleatoria y la rueda una posicion hasta el final");
+				System.out.print("CriterioSV: ");
+				try {
+					criterioSV = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = BRA(criterio, criterioSV, veces);
 				break;
 				
 			case BL:
 				System.out.println("Busqueda local");
+				
+				Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+						Problema.getAltoCaja(), Problema.getAnchoCaja());
+				
+				System.out.println("Introduzca el criterio a utilizar para obtener la solucion vecina");
+				System.out.println("0 - SIMPLE: Intercambia deos posiciones aleatorias en la permutacion");
+				System.out.println("1 - RODARP: Toma una posicion aleatoria y la rueda una posicion hasta el final");
+				System.out.print("CriterioSV: ");
+				try {
+					criterioSV = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = BL(solActual, criterioSV);
 				break;
 				
 			case GRASP:
@@ -102,29 +154,31 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public void BAP(int criterio, int veces) {
+	public Solucion BAP(int criterio, int veces) {
 		int clembuterol = veces;
 		
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 				Problema.getAltoCaja(), Problema.getAnchoCaja());
 
-		this.MejorSolucion = solInicial;
+		Solucion mejorSolucion = solInicial;
 		
 		do {
 			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 					Problema.getAltoCaja(), Problema.getAnchoCaja());
 			
-			if (solActual.compareTo(this.MejorSolucion) < 0) {
-				this.MejorSolucion = solActual;
+			if (solActual.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solActual;
 				
-				if (criterio == NoMejora) {
+				if (criterio == NOMEJORA) {
 					clembuterol = veces;
 				}
 			}
 			
 			clembuterol--;
 			
-		} while(clembuterol > 0);
+		} while (clembuterol > 0);
+		
+		return mejorSolucion;
 	}
 	
 	/**
@@ -132,29 +186,30 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public void BRA(int criterio, int veces) {
+	public Solucion BRA(int criterio, int criterioSVecina, int veces) {
 		int clembuterol = veces;
 		
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 				Problema.getAltoCaja(), Problema.getAnchoCaja());
 		
-		// aqui va a haber problemas modificar esto por las referencias
 		Solucion solActual = solInicial;
-		this.MejorSolucion = solActual;
+		Solucion mejorSolucion = solActual;
 		
 		do {			
-			solActual = GeneraSolVecina(solActual);
+			solActual = GeneraSVecina(solActual, criterioSVecina);
 			
-			if (solActual.compareTo(this.MejorSolucion) < 0) {
-				this.MejorSolucion = solActual; // posible fallo
+			if (solActual.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solActual;
 				
-				if (criterio == NoMejora) {
+				if (criterio == NOMEJORA) {
 					clembuterol = veces;
 				}
 			}
 			
 			clembuterol--;
-		} while(clembuterol > 0);
+		} while (clembuterol > 0);
+		
+		return mejorSolucion;
 	}
 	
 	/**
@@ -162,18 +217,21 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public void BL(Solucion s) {
-	/*
-	 * procedure Búsqueda Local(Var Solución Actual: Solución);
-	begin
-	GENERA(Solución Actual); 
-	 repeat
-	GENERA(Solución Vecina / Objetivo(Solución Vecina) < 
-	                                      Objetivo(Solución Actual)); 
-	Solución Actual := Solución Vecina; 
-	until (Objetivo(Solución Vecina)  Objetivo(Solución Actual),       
-	                                                  Solución Vecina);	
-	 */
+	public Solucion BL(Solucion solActual, int criterioSVecina) {
+		Solucion mejorSolucion = solActual;
+		boolean mejor = false;
+		
+		do {	
+			mejor = false;
+			solActual = GeneraSVecina(solActual, criterioSVecina);
+			
+			if (solActual.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solActual;
+				mejor = true;
+			}
+		} while (mejor);
+		
+		return mejorSolucion;
 	}
 	
 	/**
@@ -200,8 +258,52 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public Solucion GeneraSolVecina(Solucion s) {
-		return s;
+	public Solucion GeneraSVecina(Solucion s, int criterioSVecina) {
+		int permutacion[] = s.getPermutacion();
+		
+		switch(criterioSVecina) {
+			case SIMPLE:
+				int i = 0;
+				int j = 0;
+				
+				do {
+					Random rnd = new Random(System.nanoTime());
+					
+					i = (int)(rnd.nextDouble() * permutacion.length);
+					j = (int)(rnd.nextDouble() * permutacion.length);
+					
+					if (i != j)
+						swap(permutacion, i, j);
+				} while (i == j);
+				
+				break;
+				
+			case RODARP:
+				Random rnd = new Random(System.nanoTime());
+				
+				for (i = (int)(rnd.nextDouble() * (s.getPermutacion().length - 1));
+					i < s.getPermutacion().length - 1; i++) {
+					swap(permutacion, i, i + 1);
+				}
+				
+				break;
+		}
+		
+		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
+				Problema.getAnchoCaja());
+	}
+	
+	/**
+	 * Metodo que se encarga de intercambiar elementos para 
+	 * 
+	 * @param array - Array que contiene la permutacion.
+	 * @param posOne - Posicion del primer elemento a intercambiar.
+	 * @param posTwo - Posicion del segundo elemento a intercambiar.
+	 */
+	private void swap(int array[], int posOne, int posTwo) {
+		int temp = array[posTwo];
+		array[posTwo] = array[posOne];
+		array[posOne] = temp;
 	}
 		
 	/**
@@ -209,12 +311,11 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public Solucion getSolucion()
-	{
+	public Solucion getSolucion() {
 		return MejorSolucion;
 	}
 	
 	public String toString() {
-		return new String("Solucion\n" + MejorSolucion + "\n");
+		return new String(MejorSolucion + "\n");
 	}
 }

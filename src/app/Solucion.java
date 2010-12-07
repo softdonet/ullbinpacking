@@ -69,6 +69,23 @@ public class Solucion implements Comparable<Solucion>
 	}
 	
 	/**
+	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
+	 * rectangulos.
+	 * 
+	 * @param permType - Tipo de permutacion de datos.
+	 * @param rec - Array de rectangulos
+	 * @param altoCaja - Tama–o del alto de la caja
+	 * @param anchoCaja - Tama–o del ancho de la caja
+	 */
+	public Solucion (int permutacion[], ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
+		Cajas = new ArrayList<Caja>();
+		
+		Permutacion = permutacion;
+		
+		FiniteFirstFit(altoCaja, anchoCaja, rec);
+	}
+	
+	/**
 	 * Metodo que se encarga de la inicializacion de una solucion. Para un mismo
 	 * conjunto de N rectangulos, crea una permutacion aleatoria.
 	 * 
@@ -153,7 +170,7 @@ public class Solucion implements Comparable<Solucion>
 		this.Cajas = cajas;
 	}
 	public int[] getPermutacion() {
-		return Permutacion;
+		return Permutacion.clone();
 	}
 
 	public void setPermutacion(int[] permutacion) {
@@ -247,7 +264,7 @@ public class Solucion implements Comparable<Solucion>
 		toRet += "Con un espacio total ocupado del ";
 		toRet += this.AreaOcupada + "%" + "\n" + "\n";
 		
-		toRet += "Pemutacion: ";
+		toRet += "Permutacion: ";
 		for (int i = 0; i < this.Permutacion.length; i++)
 			toRet += this.Permutacion[i] + " ";
 		
