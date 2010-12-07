@@ -1,0 +1,21 @@
+/*                                        */
+/* Formato:                               */
+/* wb hb  (ancho y alto de la caja)       */
+/* n      (numero de rectangulos)         */
+/* w1 h1  (ancho y alto del rectangulo 1) */
+/* w2 h2  (ancho y alto del rectangulo 2) */
+/* ...                                    */
+/* wn hn  (ancho y alto del rectangulo n) */
+/*                                        */
+10 8
+10
+10 2
+10 4
+10 7
+10 8
+10 3
+10 5
+10 6
+10 2
+10 4
+10 8
