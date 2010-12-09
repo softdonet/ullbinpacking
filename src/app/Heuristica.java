@@ -41,6 +41,7 @@ public class Heuristica
 	 * GRASP
 	 */
 	public static final int GRASP = 3;
+	public static final int BAM = 4;
 	
 	private Problema Problema;
 	private Solucion MejorSolucion;
@@ -127,7 +128,7 @@ public class Heuristica
 				System.out.println("Busqueda local");
 				
 				Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
-						Problema.getAltoCaja(), Problema.getAnchoCaja());
+						Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
 				
 				System.out.println("Introduzca el criterio a utilizar para obtener la solucion vecina");
 				System.out.println("0 - SIMPLE: Intercambia deos posiciones aleatorias en la permutacion");
@@ -145,6 +146,33 @@ public class Heuristica
 				
 			case GRASP:
 				System.out.println("GRASP");
+				
+				Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+						Problema.getAltoCaja(), Problema.getAnchoCaja(),1);
+				
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = GRASP(solInicial, veces);
+				break;
+				
+			case BAM:
+				System.out.println("GRASP");
+								
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = BAM(veces);
 				break;
 		}
 	}
@@ -158,13 +186,13 @@ public class Heuristica
 		int clembuterol = veces;
 		
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
-				Problema.getAltoCaja(), Problema.getAnchoCaja());
+				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
 
 		Solucion mejorSolucion = solInicial;
 		
 		do {
 			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
-					Problema.getAltoCaja(), Problema.getAnchoCaja());
+					Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
 			
 			if (solActual.compareTo(mejorSolucion) < 0) {
 				mejorSolucion = solActual;
@@ -190,7 +218,7 @@ public class Heuristica
 		int clembuterol = veces;
 		
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
-				Problema.getAltoCaja(), Problema.getAnchoCaja());
+				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
 		
 		Solucion solActual = solInicial;
 		Solucion mejorSolucion = solActual;
@@ -239,19 +267,67 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public void GRASP() {
-		/*
-		 * Procedure GRASP
-			Begin
-  			Preprocesamiento
-			Repeat
-			Fase Constructiva(Solución);
-			PostProcesamiento(Solución);
-			Actualizar(Solución, MejorSolución);
-			Until (Criterio de parada);
-			End.
-		 */
+	public Solucion GRASP(Solucion solInicial, int veces) {
+		int clembuterol = veces;
+		
+		Solucion mejorSolucion = solInicial;
+		
+		do {
+			Solucion solActual = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+					Problema.getAltoCaja(), Problema.getAnchoCaja(),1);
+			
+			if (solActual.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solActual;
+				clembuterol = veces;
+			}
+			
+			clembuterol--;
+			
+		} while (clembuterol > 0);
+		
+		return mejorSolucion;
 	}
+	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */	
+	public Solucion BAM(int veces) {
+		InputStreamReader isr = new InputStreamReader(System.in);
+		BufferedReader br = new BufferedReader(isr);
+
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
+
+		int clembuterol = veces, criterioSV = 0;
+		Solucion mejorSolucion = solInicial;
+        do {
+    		System.out.println("Introduzca el criterio a utilizar para obtener la solucion vecina");
+			System.out.println("0 - SIMPLE: Intercambia deos posiciones aleatorias en la permutacion");
+			System.out.println("1 - RODARP: Toma una posicion aleatoria y la rueda una posicion hasta el final");
+			System.out.print("CriterioSV: ");
+			try {
+				criterioSV = Integer.parseInt(br.readLine());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			solInicial = BL(solInicial, criterioSV);
+			
+			if (solInicial.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solInicial;
+				clembuterol = veces;
+			}
+			
+			clembuterol--;
+
+	
+        } while (clembuterol > 0);
+		return mejorSolucion;
+	}
+	
 	
 	/**
 	 * Metodo que devuelve la solucion del problema

@@ -26,6 +26,8 @@ public class Main
 		System.out.println("0 - BAP: Busqueda aleatoria pura");
 		System.out.println("1 - BRA: Busqueda por recorrido al azar");
 		System.out.println("2 - BL: Busqueda local");
+		System.out.println("3 - GRP: GRASP");
+		System.out.println("4 - BAM: Busqueda con Arranque Multiple");
 		System.out.print("Opcion: "); 
 		int opcion = 0;
 		try {
