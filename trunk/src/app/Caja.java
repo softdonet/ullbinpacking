@@ -19,6 +19,7 @@ public class Caja
 	private int alto;
 	private int ancho;
 	private int area;
+	private int Nu;
 	private ArrayList<PuntoCota> PC;
 	private ArrayList<Rectangulo> RecIn;
 	
@@ -32,6 +33,7 @@ public class Caja
 		this.alto = alto;
 		this.ancho = ancho;
 		this.area = alto * ancho;
+		this.Nu = 0;
 		
 		RecIn = new ArrayList<Rectangulo>();
 		PC = new ArrayList<PuntoCota>();
@@ -47,6 +49,23 @@ public class Caja
 		return ancho;
 	}
 	
+	/**
+	 * Metodo que devuelve el valor Nu. Utilizado en el metodo Grasp
+	 * 
+	 * @return ancho - Ancho de la caja
+	 */
+	public int getNu() {
+		return Nu;
+	}
+	
+	/**
+	 * Metodo que modifica el valor Nu
+	 * 
+	 * @return ancho - Ancho de la caja
+	 */
+	public void setNu(int i){
+		Nu = i;
+	}
 	/**
 	 * Metodo que devuelve el area de la caja
 	 * 
@@ -89,6 +108,103 @@ public class Caja
 		
 		return toRet;
 	}
+	
+	/**
+	 * Metodo que devuelve un array de rectangulos, en el cual almacenamos
+	 * las 3 mejores posibilidades de inserción para un rectangulo r que pasamos
+	 * por parametro.
+	 * 
+	 * @param r - Rectangulo a introducir en la caja
+	 * @return Rectangulo[]
+	 */
+	public Rectangulo[] CabeAlgunRectangulo(Rectangulo r) {
+		Rectangulo[] aux;
+		aux = new Rectangulo[3];
+		int x = 0;
+		for (int i = 0; i < PC.size(); i++) {
+			Punto p = PC.get(i).getPunto();
+			if ((r.getAlto() <= PC.get(i).getCota()) && (r.getAncho() <= this.ancho - p.getX())) {
+				r.setPos(p);
+				if (x < 3) {
+					aux[x] = r;
+					x++;
+				} else {
+					int are = PC.get(i).getCota() * this.ancho - p.getX();
+					int arrec = r.getAlto() * r.getAncho();
+					int val = ValorMax(aux);
+					if ((are - arrec) < val) {
+						int x1 = PosicionInsertar(aux);
+						aux[x1] = r;
+					}
+				}
+			}
+		}
+		setNu(x);
+		return aux;
+	}
+	
+	/**
+	 * Metodo que devuelve dentro de un array de rectangulos,
+	 * la posicion del rectangulo con mayor desperdicio de espacio.
+	 * Candidato a salir del array.
+	 * 
+	 * @param Rectangulo[] R - Array de candidatos a insertar
+	 * @return int
+	 */
+	public int PosicionInsertar(Rectangulo[] R) {
+		int toRet = 0;
+		int aux = 0;
+		for (int i = 0; i < R.length; i++) {
+			Rectangulo r = R[i];
+			int cota = 0, pos = 0;
+			for (int j = 0; j < PC.size(); j++){
+				if (PC.get(j).getPunto() == r.getPos()) {
+					cota = PC.get(j).getCota();
+					pos = j;
+					break;
+				}
+			}
+			Punto P = PC.get(pos).getPunto();
+			int are = cota * this.ancho - P.getX();
+			int arrec = r.getAlto() * r.getAncho();
+			if ((are - arrec) > aux) {
+				aux = are - arrec;
+				toRet = i;
+			}
+		}
+		return toRet;
+	}
+	
+	/**
+	 * Metodo que devuelve dentro de un array de rectangulos,
+	 * el valor del rectangulo con mayor desperdicio de espacio.
+	 * Candidato a salir del array.
+	 * 
+	 * @param Rectangulo[] R - Array de candidatos a insertar
+	 * @return int
+	 */
+	public int ValorMax(Rectangulo[] R) {
+		int aux = 0;
+		for (int i = 0; i < R.length; i++) {
+			Rectangulo r = R[i];
+			int cota = 0, pos = 0;
+			for (int j = 0; j < PC.size(); j++){
+				if (PC.get(j).getPunto() == r.getPos()) {
+					cota = PC.get(j).getCota();
+					pos = j;
+					break;
+				}
+			}
+			Punto P = PC.get(pos).getPunto();
+			int are = cota * this.ancho - P.getX();
+			int arrec = r.getAlto() * r.getAncho();
+			if ((are - arrec) > aux) {
+				aux = are - arrec;
+			}
+		}
+		return aux;
+	}	
+	
 	
 	/**
 	 * Añade los puntos libres que se generan al añadir un rectangulo 
@@ -149,7 +265,7 @@ public class Caja
 		Collections.sort(PC);
 	}
 	
-	
+		
 	/**
 	 * Introduce un rectangulo en el contenedor y genera los puntos libres
 	 * 
@@ -160,6 +276,7 @@ public class Caja
 		
 		int pos = 0;
 		int cota = alto;
+
 		
 		for (int i = 0; i < PC.size(); i++) {
 			if (PC.get(i).getPunto() == r.getPos()) {
@@ -174,6 +291,7 @@ public class Caja
 		
 		AddPuntosLibres(r.getPos(), cota, r.getAlto(), r.getAncho());
 	} 
+		
 	
 	/**
 	 * Salida del contenido de la caja 

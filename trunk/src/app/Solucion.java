@@ -26,6 +26,7 @@ public class Solucion implements Comparable<Solucion>
 	
 	private ArrayList<Caja> Cajas;
 	private int Permutacion[];
+	private ArrayList<Integer> Permuocupada;
 	private int Objetivo;
 	private int AreaOcupada;
 
@@ -37,6 +38,7 @@ public class Solucion implements Comparable<Solucion>
 	public Solucion() {
 		Cajas = new ArrayList<Caja>();
 		Permutacion = null;
+		Permuocupada = null;
 		Objetivo = 0;
 		AreaOcupada = 0;
 	}
@@ -47,11 +49,16 @@ public class Solucion implements Comparable<Solucion>
 	 * 
 	 * @param permType - Tipo de permutacion de datos.
 	 * @param rec - Array de rectangulos
-	 * @param altoCaja - Tama–o del alto de la caja
-	 * @param anchoCaja - Tama–o del ancho de la caja
+	 * @param altoCaja - Tamaï¿½o del alto de la caja
+	 * @param anchoCaja - Tamaï¿½o del ancho de la caja
 	 */
-	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
+	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int C) {
 		Cajas = new ArrayList<Caja>();
+		Permuocupada = new ArrayList<Integer>();
+		
+		for (int i = 0; i < rec.size(); i++) {
+		    Permuocupada.add(0);
+		}
 		
 		switch (permType) {
 			case ALEATORIA:
@@ -65,8 +72,14 @@ public class Solucion implements Comparable<Solucion>
 				break;
 		}
 		
-		FiniteFirstFit(altoCaja, anchoCaja, rec);
+		if (C == 0) {
+			FiniteFirstFit(altoCaja, anchoCaja, rec);
+		}
+		if (C == 1) {
+			Grasp(altoCaja, anchoCaja, rec);
+		}
 	}
+	
 	
 	/**
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
@@ -74,11 +87,16 @@ public class Solucion implements Comparable<Solucion>
 	 * 
 	 * @param permType - Tipo de permutacion de datos.
 	 * @param rec - Array de rectangulos
-	 * @param altoCaja - Tama–o del alto de la caja
-	 * @param anchoCaja - Tama–o del ancho de la caja
+	 * @param altoCaja - Tamaï¿½o del alto de la caja
+	 * @param anchoCaja - Tamaï¿½o del ancho de la caja
 	 */
 	public Solucion (int permutacion[], ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
 		Cajas = new ArrayList<Caja>();
+		Permuocupada = new ArrayList<Integer>();
+		
+		for (int i = 0; i < rec.size(); i++) {
+		    Permuocupada.add(0);
+		}
 		
 		Permutacion = permutacion;
 		
@@ -232,6 +250,46 @@ public class Solucion implements Comparable<Solucion>
 		
 		this.AreaOcupada = AreaTotal();
 		this.Objetivo = Cajas.size();
+	}
+	
+	
+	
+	
+	/**
+	 * Algoritmo de colocacion para el metodo Grasp. El cual elije al azar uno 
+	 * de los tres mejores puntos disponibles para el rectangulo a insertar
+	 * 
+	 * @param altoCaja - Alto de las cajas
+	 * @param anchoCaja - Ancho de las cajas
+	 * @param rec - Array de rectangulos a introducir
+	 */
+	public void Grasp(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
+		Cajas.add(new Caja(altoCaja, anchoCaja));
+		boolean introducido = false;
+		
+		for (int i = 0; i < Permutacion.length; i++) {
+			for (int j = 0; j < Cajas.size(); j++) {
+				Rectangulo[] entrar = Cajas.get(j).CabeAlgunRectangulo(rec.get(Permutacion[i]));
+				int N = Cajas.get(j).getNu();
+				if (N > 0) {
+					int numAlea = (int) (Math.random()*N+1);
+					Cajas.get(j).NuevoRectangulo(entrar[numAlea - 1]);
+					introducido = true;
+					break;
+				} 
+			}
+			if (!introducido) {
+				Cajas.add(new Caja(altoCaja, anchoCaja));				
+				Cajas.get(Cajas.size() - 1).NuevoRectangulo(rec.get(Permutacion[i]));
+			}
+			introducido = false;
+		}
+		
+		
+		this.AreaOcupada = AreaTotal();
+		this.Objetivo = Cajas.size();
+		
+		
 	}
 	
 	/**
