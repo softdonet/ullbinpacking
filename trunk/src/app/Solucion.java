@@ -24,12 +24,21 @@ public class Solucion implements Comparable<Solucion>
 	public static final int DETERMINISTA = 1;
 	public static final int MIXTA = 2;
 	
+	
+	/**
+	 * Constantes para indicar el algoritmo de colocacion
+	 */
+	public static final int FINITE = 0;
+	public static final int GRASP = 1;
+	
+	
 	private ArrayList<Caja> Cajas;
 	private int Permutacion[];
 	private ArrayList<Integer> Permuocupada;
 	private int Objetivo;
 	private int AreaOcupada;
 
+	
 	/**
 	 * Constructor dado el numero de rectangulos
 	 * 
@@ -43,6 +52,7 @@ public class Solucion implements Comparable<Solucion>
 		AreaOcupada = 0;
 	}
 	
+	
 	/**
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
 	 * rectangulos.
@@ -52,7 +62,7 @@ public class Solucion implements Comparable<Solucion>
 	 * @param altoCaja - Tama�o del alto de la caja
 	 * @param anchoCaja - Tama�o del ancho de la caja
 	 */
-	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int C) {
+	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int colocacion) {
 		Cajas = new ArrayList<Caja>();
 		Permuocupada = new ArrayList<Integer>();
 		
@@ -72,11 +82,15 @@ public class Solucion implements Comparable<Solucion>
 				break;
 		}
 		
-		if (C == 0) {
-			FiniteFirstFit(altoCaja, anchoCaja, rec);
-		}
-		if (C == 1) {
-			Grasp(altoCaja, anchoCaja, rec);
+		switch(colocacion) {
+			case FINITE: 
+				FiniteFirstFit(altoCaja, anchoCaja, rec);
+				break;
+				
+			case GRASP:
+				Grasp(altoCaja, anchoCaja, rec);
+				break;
+				
 		}
 	}
 	
@@ -90,7 +104,7 @@ public class Solucion implements Comparable<Solucion>
 	 * @param altoCaja - Tama�o del alto de la caja
 	 * @param anchoCaja - Tama�o del ancho de la caja
 	 */
-	public Solucion (int permutacion[], ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja) {
+	public Solucion (int permutacion[], ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int colocacion) {
 		Cajas = new ArrayList<Caja>();
 		Permuocupada = new ArrayList<Integer>();
 		
@@ -100,8 +114,18 @@ public class Solucion implements Comparable<Solucion>
 		
 		Permutacion = permutacion;
 		
-		FiniteFirstFit(altoCaja, anchoCaja, rec);
+		switch(colocacion) {
+		case FINITE: 
+			FiniteFirstFit(altoCaja, anchoCaja, rec);
+			break;
+			
+		case GRASP:
+			Grasp(altoCaja, anchoCaja, rec);
+			break;
+			
+		}
 	}
+	
 	
 	/**
 	 * Metodo que se encarga de la inicializacion de una solucion. Para un mismo
@@ -122,6 +146,7 @@ public class Solucion implements Comparable<Solucion>
 			Permutacion[i] = toMix.get(i);
 	}
 	
+	
 	/**
 	 * Metodo que se encarga de la inicializacion de una solucion. Para un mismo
 	 * conjunto de N rectangulos, crea una permutacion ordenada en funcion de su
@@ -135,6 +160,7 @@ public class Solucion implements Comparable<Solucion>
 		for (int i = 0; i < size; i++)
 			Permutacion[i] = i;
 	}
+	
 	
 	/**
 	 * Metodo que se encarga de la inicializacion de una solucion. Para un mismo
@@ -158,6 +184,7 @@ public class Solucion implements Comparable<Solucion>
 		}
 	}
 	
+	
 	/**
 	 * Metodo que se encarga de intercambiar elementos para las inicializaciones
 	 * mixtas.
@@ -172,37 +199,53 @@ public class Solucion implements Comparable<Solucion>
 		array[posOne] = temp;
 	}
 	
+	
 	public int getAreaOcupada() {
 		return AreaOcupada;
 	}
+	
 	
 	public void setAreaOcupada(int areaOcupada) {
 		AreaOcupada = areaOcupada;
 	}
 	
+	
 	public ArrayList<Caja> getCajas() {
 		return Cajas;
 	}
 
+	
 	public void setCajas(ArrayList<Caja> cajas) {
 		this.Cajas = cajas;
 	}
+	
+	
 	public int[] getPermutacion() {
 		return Permutacion.clone();
 	}
 
+	
 	public void setPermutacion(int[] permutacion) {
 		this.Permutacion = permutacion;
 	}
+	
 	
 	public int getFObjetivo() {
 		return Objetivo;
 	}
 
+	
 	public void setFObjetivo(int objetivo) {
 		Objetivo = objetivo;
 	}
 	
+	
+	/**
+	 * Calculo de el area total usada. Sumatorio del area
+	 * total de cada caja.
+	 * 
+	 * @return areaTotal - Area total usada en todas las cajas
+	 */
 	public int AreaTotal() {
 		int aux = 0;
 		int auxc = 0;
@@ -214,7 +257,6 @@ public class Solucion implements Comparable<Solucion>
 		aux = (aux *100)/ auxc;
 		return aux;
 	}
-	
 	
 	
 	/**
@@ -253,11 +295,9 @@ public class Solucion implements Comparable<Solucion>
 	}
 	
 	
-	
-	
 	/**
 	 * Algoritmo de colocacion para el metodo Grasp. El cual elije al azar uno 
-	 * de los tres mejores puntos disponibles para el rectangulo a insertar
+	 * de los tres mejores puntos disponibles para el rectangulo a insertar.
 	 * 
 	 * @param altoCaja - Alto de las cajas
 	 * @param anchoCaja - Ancho de las cajas
@@ -285,12 +325,10 @@ public class Solucion implements Comparable<Solucion>
 			introducido = false;
 		}
 		
-		
 		this.AreaOcupada = AreaTotal();
 		this.Objetivo = Cajas.size();
-		
-		
 	}
+	
 	
 	/**
 	 * Metodo que compara dos soluciones y determina cual es el mayor en funcion
@@ -305,6 +343,7 @@ public class Solucion implements Comparable<Solucion>
 		return ((Integer)Objetivo).compareTo(s.getFObjetivo());
 	}
 
+	
 	/**
 	 * Metodo para resumir la informacion de una solucion en una cadena de caracteres.
 	 * 
