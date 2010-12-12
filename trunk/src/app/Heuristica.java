@@ -28,27 +28,34 @@ public class Heuristica
 	/**
 	 * Busquedas por entornos
 	 */
-	public static final int BAP = 0;              // Busqueda aleatoria pura
-	public static final int BRA = 1;			  // Busqueda por recorrido al azar
-	public static final int BL = 2;				  // Busqueda local
+	public static final int BAP = 1;              // Busqueda aleatoria pura
+	public static final int BRA = 2;			  // Busqueda por recorrido al azar
+	public static final int BL = 3;				  // Busqueda local
 	
 	
 	/**
 	 * GRASP
 	 */
-	public static final int GRASP = 3;
+	public static final int GRASP = 4;
 	
 	
 	/**
 	 * Metodos multiarranque
 	 */
-	public static final int BAM = 4;              // Busqueda con arranque multiple
+	public static final int BAM = 5;              // Busqueda con arranque multiple
 	
 	
 	/**
 	 * Recocido simulado
 	 */
-	public static final int RS = 5;              // Recocido simulado
+	public static final int RS = 6;              // Recocido simulado
+	
+	
+	/**
+	 * Busqueda por entornos variables
+	 */
+	public static final int VND = 7;
+	
 	
 	private Problema Problema;
 	private Solucion MejorSolucion;
@@ -172,6 +179,20 @@ public class Heuristica
 				}
 				*/
 				this.MejorSolucion = RS();
+				break;
+				
+			case VND:
+				System.out.println("Busqueda por entornos variable");
+								
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = VND(veces);
 				break;
 		}
 	}
@@ -319,6 +340,33 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */	
+	public Solucion VND(int veces) {
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
+		
+		int clembuterol = veces;
+		int k = 2;
+		Solucion mejorSolucion = solInicial;
+		
+		
+		do {
+			solInicial = GeneraSEntorno(solInicial,k);
+			if (solInicial.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solInicial;
+				clembuterol = veces;
+				k = 2;
+			}
+			k++;
+			clembuterol--;
+		} while (k == 0);	
+		
+		return mejorSolucion;
+	}
 	
 	public Solucion RS() {
 		Solucion mejorSolucion = new Solucion();
@@ -369,6 +417,34 @@ public class Heuristica
 				Problema.getAnchoCaja(), Solucion.FINITE);
 	}
 	
+	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public Solucion GeneraSEntorno(Solucion s, int k) {
+		int permutacion[] = s.getPermutacion();
+		
+		int clembuterol = 0;
+		int i = 0;
+		int j = 0;
+				
+		do {
+			Random rnd = new Random(System.nanoTime());
+					
+			i = (int)(rnd.nextDouble() * permutacion.length);
+			j = (int)(rnd.nextDouble() * permutacion.length);
+					
+			if (i != j) {
+				swap(permutacion, i, j);
+				clembuterol++;
+			}
+		} while ((i == j) && (clembuterol < k - 1));
+				
+		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
+				Problema.getAnchoCaja(), Solucion.FINITE);
+	}
 	
 	/**
 	 * Metodo que se encarga de intercambiar elementos para 
