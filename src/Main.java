@@ -30,6 +30,8 @@ public class Main
 		System.out.println("3 - GRP: GRASP");
 		System.out.println("Metodos multiarranque:");
 		System.out.println("4 - BAM: Busqueda con Arranque Multiple");
+		System.out.println("Recocido simulado:");
+		System.out.println("5 - RS: Recocido simulado");
 		System.out.print("Opcion: "); 
 		int opcion = 0;
 		try {

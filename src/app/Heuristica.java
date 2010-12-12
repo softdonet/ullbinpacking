@@ -45,6 +45,11 @@ public class Heuristica
 	public static final int BAM = 4;              // Busqueda con arranque multiple
 	
 	
+	/**
+	 * Recocido simulado
+	 */
+	public static final int RS = 5;              // Recocido simulado
+	
 	private Problema Problema;
 	private Solucion MejorSolucion;
 	
@@ -142,7 +147,7 @@ public class Heuristica
 				break;
 				
 			case BAM:
-				System.out.println("GRASP");
+				System.out.println("Busqueda con arranque multiple");
 								
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
@@ -153,6 +158,20 @@ public class Heuristica
 				}
 				
 				this.MejorSolucion = BAM(veces);
+				break;
+				
+			case RS:
+				System.out.println("Recocido simulado");
+				/*				
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				*/
+				this.MejorSolucion = RS();
 				break;
 		}
 	}
@@ -296,6 +315,31 @@ public class Heuristica
 			clembuterol--;
 
         } while (clembuterol > 0);
+		return mejorSolucion;
+	}
+	
+	
+	
+	public Solucion RS() {
+		Solucion mejorSolucion = new Solucion();
+		int temperatura = 0;
+		int L[];
+		
+		int k = 0;
+		
+		do {
+			Solucion solActual = new Solucion();
+			
+			for (int m = 1;m < 10; m++) { // sustituir el 10 por L[k]
+				if (Math.exp((mejorSolucion.getFObjetivo() - solActual.getFObjetivo())) >
+				(int)(Math.random() * 2)) {
+					mejorSolucion = solActual;
+				}
+			}
+			
+			k++;
+		} while(k < 4); //falta el criterio de parada
+		
 		return mejorSolucion;
 	}
 	
