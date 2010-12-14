@@ -55,6 +55,7 @@ public class Heuristica
 	 * Busqueda por entornos variables
 	 */
 	public static final int VND = 7;
+	public static final int BVNS = 8;
 	
 	
 	private Problema Problema;
@@ -181,7 +182,7 @@ public class Heuristica
 				this.MejorSolucion = RS();
 				break;
 				
-			case VND:
+			case BVNS:
 				System.out.println("Busqueda por entornos variable");
 								
 				System.out.print("Introduzca el numero de ejecuciones: ");
@@ -192,7 +193,7 @@ public class Heuristica
 					e.printStackTrace();
 				}
 				
-				this.MejorSolucion = VND(veces);
+				this.MejorSolucion = BVNS(veces);
 				break;
 		}
 	}
@@ -345,7 +346,7 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */	
-	public Solucion VND(int veces) {
+	public Solucion BVNS(int veces) {
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
 		
@@ -355,7 +356,8 @@ public class Heuristica
 		
 		
 		do {
-			solInicial = GeneraSEntorno(solInicial,k);
+			solInicial = Agitacion(solInicial,k);
+			solInicial = BL(solInicial);
 			if (solInicial.compareTo(mejorSolucion) < 0) {
 				mejorSolucion = solInicial;
 				clembuterol = veces;
@@ -423,7 +425,45 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	public Solucion GeneraSEntorno(Solucion s, int k) {
+	/*public Solucion GeneraSEntorno(Solucion s, int k) {
+		int permutacion[] = s.getPermutacion();
+		
+		int clembuterol = 0;
+		int i = 0;
+		int j = permutacion.length;
+		int x = 0;
+		int temp = 0;
+
+		Random rnd = new Random(System.nanoTime());
+		
+		i = (int)(rnd.nextDouble() * permutacion.length);
+		x = i;
+		temp = permutacion[i];
+
+		for (int z = 0; z < k; z++) {				
+			while (i < j - 1) {
+				permutacion[i] = permutacion[i+1];
+				i++;
+				if (i == j - 1) {
+					permutacion[i] = temp;
+					i = x;
+					temp = permutacion[i];
+				}
+			}
+		}
+				
+		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
+				Problema.getAnchoCaja(), Solucion.FINITE);
+	}
+*/
+	
+	
+	/**
+	 * Metodo que devuelve la solucion del problema
+	 * 
+	 * @return Solucion - Solucion del problema
+	 */
+	public Solucion Agitacion(Solucion s, int k) {
 		int permutacion[] = s.getPermutacion();
 		
 		int clembuterol = 0;
