@@ -181,7 +181,21 @@ public class Heuristica
 				*/
 				this.MejorSolucion = RS();
 				break;
+
+			case VND:
+				System.out.println("Busqueda por entornos variable");
+								
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
+				this.MejorSolucion = VND(veces);
+				break;
+
 			case BVNS:
 				System.out.println("Busqueda por entornos variable");
 								
@@ -370,6 +384,31 @@ public class Heuristica
 		return mejorSolucion;
 	}
 	
+	
+	public Solucion VND(int veces) {
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
+		
+		int clembuterol = veces;
+		int k = 2;
+		Solucion mejorSolucion = solInicial;
+		
+		
+		do {
+			solInicial = GeneraSEntorno(solInicial,k);
+			if (solInicial.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solInicial;
+				clembuterol = veces;
+				k = 2;
+			}
+			k++;
+			clembuterol--;
+		} while (k == 0);	
+		
+		return mejorSolucion;
+	}
+	
+	
 	public Solucion RS() {
 		Solucion mejorSolucion = new Solucion();
 		int temperatura = 0;
@@ -425,37 +464,36 @@ public class Heuristica
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
-	/*public Solucion GeneraSEntorno(Solucion s, int k) {
+	public Solucion GeneraSEntorno(Solucion s, int k) {
 		int permutacion[] = s.getPermutacion();
 		
 		int clembuterol = 0;
-		int i = 0;
-		int j = permutacion.length;
-		int x = 0;
+		int i = 0, x = 0, f = 0;
+		int j = permutacion.length - 1;
 		int temp = 0;
 
 		Random rnd = new Random(System.nanoTime());
 		
-		i = (int)(rnd.nextDouble() * permutacion.length);
+		i = (int)(rnd.nextDouble() * (j - 1));
 		x = i;
 		temp = permutacion[i];
 
 		for (int z = 0; z < k; z++) {				
-			while (i < j - 1) {
-				permutacion[i] = permutacion[i+1];
-				i++;
-				if (i == j - 1) {
-					permutacion[i] = temp;
-					i = x;
-					temp = permutacion[i];
-				}
+			for (int m = i; m < j; m++) {
+				System.out.println("aaaaaaaaaaaaskadjflñksa");
+				swap(permutacion, m, m+1);
+				//if (i == j) {
 			}
+			//permutacion[j] = temp;
+			//temp = permutacion[i];
 		}
+		
+		
 				
 		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
 				Problema.getAnchoCaja(), Solucion.FINITE);
 	}
-*/
+
 	
 	
 	/**
