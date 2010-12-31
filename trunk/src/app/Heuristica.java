@@ -309,9 +309,11 @@ public class Heuristica
 				mejorSolucion = solActual;
 				mejor = true;
 			}
-			
+
 			clembuterol--;
-		} while (!mejor || (clembuterol == 0));
+			
+			mejor = clembuterol == 0;
+		} while (!mejor);
 		
 		return mejorSolucion;
 	}
@@ -486,7 +488,7 @@ public class Heuristica
 		
 		do {
 			Poblacion = CrearPoblacion(100);
-			intentos = 4;
+			intentos = 10;
 			
 			do {
 				gnp = false;
@@ -502,7 +504,7 @@ public class Heuristica
 					Subconjunto = SeleccionarSubconjunto((ArrayList<Solucion>)RefSet.clone(), i, j);
 					Solucion solActual = CombinarSoluciones(Subconjunto);
 					solActual = BL(solActual); // Mejorar la solucion
-					
+
 					// Actualizar RefSet
 					if ((solActual.compareTo(RefSet.get(i)) < 0) || (solActual.compareTo(RefSet.get(j)) < 0)) {
 						if (solActual.compareTo(RefSet.get(i)) < 0) {
@@ -653,7 +655,7 @@ public class Heuristica
 			Solucion s = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(),
 					Problema.getAnchoCaja(), Solucion.FINITE);
 			
-			s = GRASP(s, 1000); // Obtiene una solucion dispersa de la anterior mediante grasp
+			s = GRASP(s, 10000); // Obtiene una solucion dispersa de la anterior mediante grasp
 			
 			boolean entra = true;
 			
