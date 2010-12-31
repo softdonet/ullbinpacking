@@ -34,7 +34,7 @@ public class Solucion implements Comparable<Solucion>
 	
 	private ArrayList<Caja> Cajas;
 	private int Permutacion[];
-	private ArrayList<Integer> Permuocupada;
+	private ArrayList<Integer> PermuOcupada;
 	private int Objetivo;
 	private int AreaOcupada;
 
@@ -47,7 +47,7 @@ public class Solucion implements Comparable<Solucion>
 	public Solucion() {
 		Cajas = new ArrayList<Caja>();
 		Permutacion = null;
-		Permuocupada = null;
+		PermuOcupada = null;
 		Objetivo = 0;
 		AreaOcupada = 0;
 	}
@@ -64,10 +64,10 @@ public class Solucion implements Comparable<Solucion>
 	 */
 	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int colocacion) {
 		Cajas = new ArrayList<Caja>();
-		Permuocupada = new ArrayList<Integer>();
+		PermuOcupada = new ArrayList<Integer>();
 		
 		for (int i = 0; i < rec.size(); i++) {
-		    Permuocupada.add(0);
+		    PermuOcupada.add(0);
 		}
 		
 		switch (permType) {
@@ -90,7 +90,6 @@ public class Solucion implements Comparable<Solucion>
 			case GRASP:
 				Grasp(altoCaja, anchoCaja, rec);
 				break;
-				
 		}
 	}
 	
@@ -106,10 +105,10 @@ public class Solucion implements Comparable<Solucion>
 	 */
 	public Solucion (int permutacion[], ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int colocacion) {
 		Cajas = new ArrayList<Caja>();
-		Permuocupada = new ArrayList<Integer>();
+		PermuOcupada = new ArrayList<Integer>();
 		
 		for (int i = 0; i < rec.size(); i++) {
-		    Permuocupada.add(0);
+		    PermuOcupada.add(0);
 		}
 		
 		Permutacion = permutacion;
@@ -122,7 +121,6 @@ public class Solucion implements Comparable<Solucion>
 		case GRASP:
 			Grasp(altoCaja, anchoCaja, rec);
 			break;
-			
 		}
 	}
 	
@@ -246,7 +244,7 @@ public class Solucion implements Comparable<Solucion>
 	 * 
 	 * @return areaTotal - Area total usada en todas las cajas
 	 */
-	public int AreaTotal() {
+	private int AreaTotal() {
 		int aux = 0;
 		int auxc = 0;
 		for (int i = 0; i < Cajas.size(); i++){
@@ -260,6 +258,28 @@ public class Solucion implements Comparable<Solucion>
 	
 	
 	/**
+	 * Calculo de el area total usada menos la ultima caja. Sumatorio del area
+	 * total de cada caja.
+	 * 
+	 * @return areaTotal - Area total usada en todas las cajas menos la ultima
+	 */
+	public int getAreaTotalMU() {
+		int aux = 0;
+		int auxc = 0;
+		
+		for (int i = 0; i < Cajas.size() - 1; i++){
+			Caja c = Cajas.get(i);
+			auxc = auxc + c.getArea();
+			aux = aux + c.getAreaRestante();			
+		}
+		
+		aux = (aux * 100) / auxc;
+		
+		return aux;
+	}
+	
+	
+	/**
 	 * Algoritmo de colocacion inicial de los rectangulos en una caja
 	 * tras obtener la permutacion inicial.
 	 * 
@@ -267,7 +287,7 @@ public class Solucion implements Comparable<Solucion>
 	 * @param anchoCaja - Ancho de las cajas
 	 * @param rec - Array de rectangulos a introducir
 	 */
-	public void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
+	private void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		Cajas.add(new Caja(altoCaja, anchoCaja));
 		boolean introducido = false;
 		
@@ -303,7 +323,7 @@ public class Solucion implements Comparable<Solucion>
 	 * @param anchoCaja - Ancho de las cajas
 	 * @param rec - Array de rectangulos a introducir
 	 */
-	public void Grasp(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
+	private void Grasp(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		Cajas.add(new Caja(altoCaja, anchoCaja));
 		boolean introducido = false;
 		

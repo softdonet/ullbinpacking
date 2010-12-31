@@ -3,6 +3,7 @@ package app;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -57,6 +58,11 @@ public class Heuristica
 	public static final int VND = 7;
 	public static final int BVNS = 8;
 	
+	
+	/**
+	 * Heuristicas poblacionales
+	 */
+	public static final int BD = 9;              // Busquedas dispersas
 	
 	private Problema Problema;
 	private Solucion MejorSolucion;
@@ -141,7 +147,7 @@ public class Heuristica
 				System.out.println("GRASP");
 				
 				Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
-						Problema.getAltoCaja(), Problema.getAnchoCaja(),1);
+						Problema.getAltoCaja(), Problema.getAnchoCaja(), Solucion.GRASP);
 				
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
@@ -170,15 +176,7 @@ public class Heuristica
 				
 			case RS:
 				System.out.println("Recocido simulado");
-				/*				
-				System.out.print("Introduzca el numero de ejecuciones: ");
-				try {
-					veces = Integer.parseInt(br.readLine());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
+				
 				this.MejorSolucion = RS();
 				break;
 
@@ -208,6 +206,20 @@ public class Heuristica
 				}
 				
 				this.MejorSolucion = BVNS(veces);
+				break;
+				
+			case BD:
+				System.out.println("Busquedas dispersas");
+								
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = BD(veces);
 				break;
 		}
 	}
@@ -286,6 +298,8 @@ public class Heuristica
 	public Solucion BL(Solucion solActual) {
 		Solucion mejorSolucion = solActual;
 		boolean mejor = false;
+		int clembuterol = 100;
+
 		
 		do {	
 			mejor = false;
@@ -295,7 +309,9 @@ public class Heuristica
 				mejorSolucion = solActual;
 				mejor = true;
 			}
-		} while (mejor);
+			
+			clembuterol--;
+		} while (!mejor || (clembuterol == 0));
 		
 		return mejorSolucion;
 	}
@@ -410,24 +426,128 @@ public class Heuristica
 	
 	
 	public Solucion RS() {
-		Solucion mejorSolucion = new Solucion();
-		int temperatura = 0;
-		int L[];
+		Solucion mejorSolucion = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(),
+				Problema.getAnchoCaja(), Solucion.FINITE);
+		Solucion solActual = mejorSolucion;
+		
+		Random r = new Random(System.nanoTime());
 		
 		int k = 0;
+		double alfa = 0.9;
+		double mediaObj = 0;
+		
+		for (int i = 0; i < 100; i++) {
+			Solucion s = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(),
+					Problema.getAnchoCaja(), Solucion.FINITE);
+			
+			mediaObj += s.getFObjetivo();
+		}
+		
+		mediaObj = mediaObj / 100;
+		
+		double temperatura = 50 * mediaObj;
+		double L = (int)Math.pow(Problema.getRectangulos().size(), 2);
 		
 		do {
-			Solucion solActual = new Solucion();
+			solActual = GeneraSVecina(solActual);
 			
-			for (int m = 1;m < 10; m++) { // sustituir el 10 por L[k]
-				if (Math.exp((mejorSolucion.getFObjetivo() - solActual.getFObjetivo())) >
-				(int)(Math.random() * 2)) {
+			for (int m = 0; m < L; m++) {
+				if (mejorSolucion.getFObjetivo() > solActual.getFObjetivo()) {
+					mejorSolucion = solActual;
+				}
+				else if (Math.exp((mejorSolucion.getFObjetivo() - solActual.getFObjetivo()) / temperatura) > r.nextFloat()) {
 					mejorSolucion = solActual;
 				}
 			}
 			
 			k++;
-		} while(k < 4); //falta el criterio de parada
+			
+			temperatura = temperatura * alfa;
+			L = k * 1.05;
+		} while (temperatura > 0.1);
+		
+		return mejorSolucion;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	Solucion BD(int veces) {
+		ArrayList<Solucion> Poblacion = new ArrayList<Solucion>();
+		ArrayList<Solucion> RefSet = new ArrayList<Solucion>();
+		ArrayList<Solucion> Subconjunto = new ArrayList<Solucion>();
+		
+		Solucion mejorSolucion = new Solucion();
+		
+		int clembuterol = veces;
+		int intentos = 0;
+		
+		boolean gnp = false;  // Generar nueva poblacion
+		boolean gnrs = false; // Generar nuevo reference set
+		
+		do {
+			Poblacion = CrearPoblacion(100);
+			intentos = 4;
+			
+			do {
+				gnp = false;
+				
+				RefSet = GenerarReferenceSet(10, (ArrayList<Solucion>)Poblacion.clone());
+				
+				int i = 0;
+				int j = 1;
+				
+				do {
+					gnrs = false;
+					
+					Subconjunto = SeleccionarSubconjunto((ArrayList<Solucion>)RefSet.clone(), i, j);
+					Solucion solActual = CombinarSoluciones(Subconjunto);
+					solActual = BL(solActual); // Mejorar la solucion
+					
+					// Actualizar RefSet
+					if ((solActual.compareTo(RefSet.get(i)) < 0) || (solActual.compareTo(RefSet.get(j)) < 0)) {
+						if (solActual.compareTo(RefSet.get(i)) < 0) {
+							RefSet.remove(RefSet.get(i));
+						} else {
+							RefSet.remove(RefSet.get(j));
+						}
+						
+						RefSet.add(solActual);
+						
+						i = 0;
+						j = 1;
+					} else {
+						j++;
+						
+						if (j > RefSet.size() - 1) {
+							i++;
+							j = i + 1;
+						}
+					}
+					
+					if (i == RefSet.size() - 1) {
+						gnrs = true;
+					}
+				} while (!gnrs);
+				
+				mejorSolucion = RefSet.get(0);
+				
+				for (int x = 1; x < RefSet.size(); x++) {
+					if (RefSet.get(x).compareTo(mejorSolucion) < 0) { 
+						mejorSolucion = RefSet.get(x);
+					}
+				}
+				
+				// Si para un numero de intentos no mejora
+				// creamos una nueva poblacion
+				intentos--;
+				
+				if (intentos == 0) {
+					gnp = true;
+				}
+			} while (!gnp);
+		
+			clembuterol--;
+		} while (clembuterol > 0);
 		
 		return mejorSolucion;
 	}
@@ -487,8 +607,6 @@ public class Heuristica
 			//permutacion[j] = temp;
 			//temp = permutacion[i];
 		}
-		
-		
 				
 		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
 				Problema.getAnchoCaja(), Solucion.FINITE);
@@ -523,6 +641,171 @@ public class Heuristica
 		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
 				Problema.getAnchoCaja(), Solucion.FINITE);
 	}
+	
+	
+	private ArrayList<Solucion> CrearPoblacion(int tamPoblacion) {
+		ArrayList<Solucion> poblacion = new ArrayList<Solucion>();
+		
+		poblacion.add(new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(),
+				Problema.getAnchoCaja(), Solucion.FINITE));
+		
+		while (poblacion.size() < tamPoblacion) {
+			Solucion s = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(),
+					Problema.getAnchoCaja(), Solucion.FINITE);
+			
+			s = GRASP(s, 1000); // Obtiene una solucion dispersa de la anterior mediante grasp
+			
+			boolean entra = true;
+			
+			for (int i = 0; i < poblacion.size(); i++) {
+				if (poblacion.get(i).getPermutacion().equals(s.getPermutacion())) {
+					entra = false;
+					break;
+				}
+			}
+			
+			if (entra)
+				poblacion.add(s);
+		}
+		
+		return poblacion;
+	}
+	
+	
+	private ArrayList<Solucion> GenerarReferenceSet(int tamRS, ArrayList<Solucion> pobAux) {
+		ArrayList<Solucion> refset = new ArrayList<Solucion>();
+		
+		int r1 = tamRS / 2;
+		int r2 = r1;
+		int pos = 0;
+		
+		// Mejores soluciones
+		while (r1 > 0) {
+			pos = 0;
+			Solucion s = pobAux.get(pos);
+			
+			for (int i = 0; i < pobAux.size(); i++) {
+				if (pobAux.get(i).compareTo(s) < 0) {
+					pos = i;
+					s = pobAux.get(i);
+				} else if (pobAux.get(i).compareTo(s) == 0) {
+					if (pobAux.get(i).getAreaTotalMU() < s.getAreaTotalMU()) {
+						pos = i;
+						s = pobAux.get(i);
+					}
+				}
+				
+			}
+			
+			r1--;
+			refset.add(s);
+			pobAux.remove(pos);
+		}
+		
+		// Mas dispersas 
+		while (r2 > 0) {
+			pos = pobAux.size() - 1;
+			Solucion s = pobAux.get(pos);
+			
+			for (int i = 0; i < pobAux.size(); i++) {
+				if (pobAux.get(i).compareTo(s) > 0) {
+					pos = i;
+					s = pobAux.get(i);
+				} else if (pobAux.get(i).compareTo(s) == 0) {
+					if (pobAux.get(i).getAreaTotalMU() > s.getAreaTotalMU()) {
+						pos = i;
+						s = pobAux.get(i);
+					}
+				}
+			}
+			
+			r2--;
+			refset.add(s);
+			pobAux.remove(pos);
+		}
+		
+		return refset;
+	}
+	
+	
+	private ArrayList<Solucion> SeleccionarSubconjunto(ArrayList<Solucion> RefSet, int x, int y) {
+		ArrayList<Solucion> subconjunto = new ArrayList<Solucion>();
+		
+		subconjunto.add(RefSet.get(x));
+		subconjunto.add(RefSet.get(y));
+		
+		return subconjunto;
+	}
+	
+	
+	private Solucion CombinarSoluciones(ArrayList<Solucion> subconjunto) {
+		int perm0[] = subconjunto.get(0).getPermutacion();
+		int perm1[] = subconjunto.get(1).getPermutacion();
+		int permutacion[] = new int[perm0.length];
+		
+		for(int i = 0; i < perm1.length; i++) {
+			permutacion[i] = perm1.length;
+		}
+		
+		boolean dentro0 = false;
+		boolean dentro1 = false;
+		boolean problema = false;
+		
+		do {
+			problema = false;
+			
+			for(int i = 0; i < perm1.length; i++) {
+				// Busca si la primera esta dentro ya
+				for (int x = 0; x < perm1.length; x++) {
+					dentro0 = permutacion[x] == perm0[i];
+						
+					if (dentro0) {
+						break;
+					}
+				}
+				
+				// Busca si la segunda esta dentro ya
+				for (int x = 0; x < perm1.length; x++) {
+					dentro1 = permutacion[x] == perm1[i];
+						
+					if (dentro1) {
+						break;
+					}
+				}
+				
+				// si estan las dos hay un problema
+				if (dentro0 && dentro1) {
+					problema = true;
+				} else {
+					if (dentro0) {
+						permutacion[i] = perm1[i];
+					} else if (dentro1) {
+						permutacion[i] = perm0[i];
+					} else {
+						if (Problema.getRectangulos().get(perm0[i]).getArea() > 
+							Problema.getRectangulos().get(perm1[i]).getArea()) {
+							permutacion[i] = perm0[i];
+						} else {
+							permutacion[i] = perm1[i];
+						}
+					}
+				}
+			}
+			
+			for(int i = 0; i < perm1.length; i++) {
+				if (permutacion[i] == perm1.length) {
+					problema = true;
+					break;
+				} else {
+					problema = false;
+				}
+			}
+		} while (problema);
+		
+		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
+				Problema.getAnchoCaja(), Solucion.FINITE);
+	}
+	
 	
 	/**
 	 * Metodo que se encarga de intercambiar elementos para 
