@@ -1,35 +1,40 @@
 package app;
 
 /**
- * Clase con los datos necesarios para representar la altura maxima de un punto
+ * Clase con los datos necesarios para representar la altura maxima de un punto.
  * 
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @since 0.2
  */
 public class PuntoCota implements Comparable<PuntoCota>
 {
 
 	private Punto punto;
+	
+	/**
+	 * Altura maxima del punto.
+	 */
 	private int cota;
 
 	/**
-	 * Constructor de la clase PuntoCota
+	 * Constructor de la clase PuntoCota.
 	 * 
 	 * @param p - Punto
-	 * @param cota - Altura maxima que se puede alcanzar desde un punto
+	 * @param cota - Altura maxima que se puede alcanzar desde un punto.
 	 */
 	public PuntoCota (Punto p, int cota) {
 		punto = p;
 		this.cota = cota;
 	}
 	
+	
 	/**
-	 * Metodo que devuelve el punto
+	 * Metodo que devuelve el punto.
 	 * 
 	 * @return punto
 	 */
@@ -37,14 +42,16 @@ public class PuntoCota implements Comparable<PuntoCota>
 		return punto;
 	}
 	
+	
 	/**
-	 * Metodo que devuelve la cota
+	 * Metodo que devuelve la cota.
 	 * 
 	 * @return cota
 	 */
 	public int getCota() {
 		return cota;
 	}
+	
 	
 	/**
 	 * Metodo que compara dos puntos y determina cual es prioritario segun su

@@ -14,7 +14,7 @@ import java.util.Random;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @since 1.0
  */
 public class Heuristica 
@@ -58,11 +58,15 @@ public class Heuristica
 	public static final int VND = 7;
 	public static final int BVNS = 8;
 	
+	/**
+	 * Heuristicas poblacionales
+	 */
+	public static final int BT = 9;               // Busqueda tabu
 	
 	/**
 	 * Heuristicas poblacionales
 	 */
-	public static final int BD = 9;              // Busquedas dispersas
+	public static final int BD = 10;              // Busquedas dispersas
 	
 	private Problema Problema;
 	private Solucion MejorSolucion;
@@ -72,8 +76,8 @@ public class Heuristica
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
 	 * rectangulos.
 	 * 
-	 * @param permType - Tipo de heuristica.
-	 * @param size 
+	 * @param tipoHeuristica Tipo de heuristica.
+	 * @param p Problema.
 	 */
 	public Heuristica(int tipoHeuristica, Problema p) {
 		Problema = p;
@@ -208,6 +212,10 @@ public class Heuristica
 				this.MejorSolucion = BVNS(veces);
 				break;
 				
+			case BT:
+				System.out.println("Busqueda tabu");
+				break;
+				
 			case BD:
 				System.out.println("Busquedas dispersas");
 								
@@ -261,7 +269,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion BRA(int criterio, int veces) {
 		int clembuterol = veces;
@@ -293,7 +301,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion BL(Solucion solActual) {
 		Solucion mejorSolucion = solActual;
@@ -322,7 +330,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GRASP(Solucion solInicial, int veces) {
 		int clembuterol = veces;
@@ -349,7 +357,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */	
 	public Solucion BAM(int veces) {
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
@@ -376,7 +384,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */	
 	public Solucion BVNS(int veces) {
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
@@ -556,9 +564,11 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve una solucion vecina a partir de otra solucion.
+	 * Una solución vecina de otra se obtiene al intercambia el orden en
+	 * que se consideran dos rectángulos.
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GeneraSVecina(Solucion s) {
 		int permutacion[] = s.getPermutacion();
@@ -584,7 +594,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GeneraSEntorno(Solucion s, int k) {
 		int permutacion[] = s.getPermutacion();
@@ -619,7 +629,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion Agitacion(Solucion s, int k) {
 		int permutacion[] = s.getPermutacion();
@@ -826,7 +836,7 @@ public class Heuristica
 	/**
 	 * Metodo que devuelve la solucion del problema
 	 * 
-	 * @return Solucion - Solucion del problema
+	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion getSolucion() {
 		return MejorSolucion;
@@ -836,7 +846,7 @@ public class Heuristica
 	/**
 	 * Metodo para resumir la informacion de una heuristica en una cadena de caracteres.
 	 * 
-	 * @return String - Mejor solucion de una heuristica
+	 * @return String - Mejor solucion de una heuristica.
 	 */
 	public String toString() {
 		return new String(MejorSolucion + "\n");
