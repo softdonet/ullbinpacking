@@ -12,13 +12,13 @@ import java.util.Random;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @since 0.1
  */
 public class Solucion implements Comparable<Solucion>
 {
 	/**
-	 * Constantes para indicar el tipo de generacion de solucion inicial
+	 * Constantes para indicar el tipo de generacion de solucion inicial.
 	 */
 	public static final int ALEATORIA = 0;
 	public static final int DETERMINISTA = 1;
@@ -26,23 +26,35 @@ public class Solucion implements Comparable<Solucion>
 	
 	
 	/**
-	 * Constantes para indicar el algoritmo de colocacion
+	 * Constantes para indicar el algoritmo de colocacion.
 	 */
 	public static final int FINITE = 0;
 	public static final int GRASP = 1;
 	
-	
+	/**
+	 * Array de Cajas.
+	 */
 	private ArrayList<Caja> Cajas;
+	
+	/**
+	 * Solucion del problema.
+	 */
 	private int Permutacion[];
 	private ArrayList<Integer> PermuOcupada;
+	
+	/**
+	 * Valor de la funcion objetivo.
+	 */
 	private int Objetivo;
+	
+	/**
+	 * Sumatorio del area ocupada por todos los rectangulos de todas las cajas.
+	 */
 	private int AreaOcupada;
 
 	
 	/**
-	 * Constructor dado el numero de rectangulos
-	 * 
-	 * @param size - Numero de rectangulos.
+	 * Constructor dado el numero de rectangulos.
 	 */
 	public Solucion() {
 		Cajas = new ArrayList<Caja>();
@@ -57,10 +69,10 @@ public class Solucion implements Comparable<Solucion>
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
 	 * rectangulos.
 	 * 
-	 * @param permType - Tipo de permutacion de datos.
-	 * @param rec - Array de rectangulos
-	 * @param altoCaja - Tama�o del alto de la caja
-	 * @param anchoCaja - Tama�o del ancho de la caja
+	 * @param permType Tipo de permutacion de datos.
+	 * @param rec Array de rectangulos.
+	 * @param altoCaja Tamano del alto de la caja.
+	 * @param anchoCaja Tamano del ancho de la caja.
 	 */
 	public Solucion (int permType, ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int colocacion) {
 		Cajas = new ArrayList<Caja>();
@@ -98,10 +110,10 @@ public class Solucion implements Comparable<Solucion>
 	 * Constructor dado el tipo de generacion de solucion inicial y el numero de
 	 * rectangulos.
 	 * 
-	 * @param permType - Tipo de permutacion de datos.
-	 * @param rec - Array de rectangulos
-	 * @param altoCaja - Tama�o del alto de la caja
-	 * @param anchoCaja - Tama�o del ancho de la caja
+	 * @param rec Array de rectangulos.
+	 * @param altoCaja Tamano del alto de la caja.
+	 * @param anchoCaja Tamano del ancho de la caja.
+	 * @param colocacion Tipo de algoritmo de colocacion.
 	 */
 	public Solucion (int permutacion[], ArrayList<Rectangulo> rec, int altoCaja, int anchoCaja, int colocacion) {
 		Cajas = new ArrayList<Caja>();
@@ -129,7 +141,7 @@ public class Solucion implements Comparable<Solucion>
 	 * Metodo que se encarga de la inicializacion de una solucion. Para un mismo
 	 * conjunto de N rectangulos, crea una permutacion aleatoria.
 	 * 
-	 * @param size - Numero de rectangulos.
+	 * @param size Numero de rectangulos.
 	 */
 	private void permAleatoria (int size) {
 		Permutacion = new int[size];
@@ -150,7 +162,7 @@ public class Solucion implements Comparable<Solucion>
 	 * conjunto de N rectangulos, crea una permutacion ordenada en funcion de su
 	 * area (de mayor a menor).
 	 * 
-	 * @param size - Numero de rectangulos.
+	 * @param size Numero de rectangulos.
 	 */
 	private void permDeterminista(int size) {
 		Permutacion = new int[size];
@@ -165,7 +177,7 @@ public class Solucion implements Comparable<Solucion>
 	 * conjunto de N rectangulos, crea una permutacion mixta, resultante de
 	 * aplicar un metodo determinista y un metodo aleatorio.
 	 * 
-	 * @param size - Numero de rectangulos.
+	 * @param size Numero de rectangulos.
 	 */
 	private void permMixta (int size) {
 		Permutacion = new int[size];
@@ -187,9 +199,9 @@ public class Solucion implements Comparable<Solucion>
 	 * Metodo que se encarga de intercambiar elementos para las inicializaciones
 	 * mixtas.
 	 * 
-	 * @param array - Array que contiene la permutacion.
-	 * @param posOne - Posicion del primer elemento a intercambiar.
-	 * @param posTwo - Posicion del segundo elemento a intercambiar.
+	 * @param array Array que contiene la permutacion.
+	 * @param posOne Posicion del primer elemento a intercambiar.
+	 * @param posTwo Posicion del segundo elemento a intercambiar.
 	 */
 	private void swap (int array[], int posOne, int posTwo) {
 		int temp = array[posTwo];
@@ -198,51 +210,31 @@ public class Solucion implements Comparable<Solucion>
 	}
 	
 	
-	public int getAreaOcupada() {
-		return AreaOcupada;
-	}
-	
-	
-	public void setAreaOcupada(int areaOcupada) {
-		AreaOcupada = areaOcupada;
-	}
-	
-	
-	public ArrayList<Caja> getCajas() {
-		return Cajas;
-	}
-
-	
-	public void setCajas(ArrayList<Caja> cajas) {
-		this.Cajas = cajas;
-	}
-	
-	
+	/**
+	 * Metodo que devuelve la permutacion de la solucion.
+	 * 
+	 * @return Permutacion
+	 */
 	public int[] getPermutacion() {
 		return Permutacion.clone();
 	}
 
 	
-	public void setPermutacion(int[] permutacion) {
-		this.Permutacion = permutacion;
-	}
-	
-	
+	/**
+	 * Metodo que devuelve el valor de la funcion objetivo de la solucion.
+	 * 
+	 * @return Objetivo
+	 */
 	public int getFObjetivo() {
 		return Objetivo;
 	}
 
 	
-	public void setFObjetivo(int objetivo) {
-		Objetivo = objetivo;
-	}
-	
-	
 	/**
 	 * Calculo de el area total usada. Sumatorio del area
 	 * total de cada caja.
 	 * 
-	 * @return areaTotal - Area total usada en todas las cajas
+	 * @return areaTotal - Area total usada en todas las cajas.
 	 */
 	private int AreaTotal() {
 		int aux = 0;
@@ -261,7 +253,7 @@ public class Solucion implements Comparable<Solucion>
 	 * Calculo de el area total usada menos la ultima caja. Sumatorio del area
 	 * total de cada caja.
 	 * 
-	 * @return areaTotal - Area total usada en todas las cajas menos la ultima
+	 * @return areaTotal - Area total usada en todas las cajas menos la ultima.
 	 */
 	public int getAreaTotalMU() {
 		int aux = 0;
@@ -283,9 +275,9 @@ public class Solucion implements Comparable<Solucion>
 	 * Algoritmo de colocacion inicial de los rectangulos en una caja
 	 * tras obtener la permutacion inicial.
 	 * 
-	 * @param altoCaja - Alto de las cajas
-	 * @param anchoCaja - Ancho de las cajas
-	 * @param rec - Array de rectangulos a introducir
+	 * @param altoCaja Alto de las cajas.
+	 * @param anchoCaja Ancho de las cajas.
+	 * @param rec Array de rectangulos a introducir.
 	 */
 	private void FiniteFirstFit(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		Cajas.add(new Caja(altoCaja, anchoCaja));
@@ -319,9 +311,9 @@ public class Solucion implements Comparable<Solucion>
 	 * Algoritmo de colocacion para el metodo Grasp. El cual elije al azar uno 
 	 * de los tres mejores puntos disponibles para el rectangulo a insertar.
 	 * 
-	 * @param altoCaja - Alto de las cajas
-	 * @param anchoCaja - Ancho de las cajas
-	 * @param rec - Array de rectangulos a introducir
+	 * @param altoCaja Alto de las cajas.
+	 * @param anchoCaja Ancho de las cajas.
+	 * @param rec Array de rectangulos a introducir.
 	 */
 	private void Grasp(int altoCaja, int anchoCaja, ArrayList<Rectangulo> rec) {
 		Cajas.add(new Caja(altoCaja, anchoCaja));
@@ -354,7 +346,7 @@ public class Solucion implements Comparable<Solucion>
 	 * Metodo que compara dos soluciones y determina cual es el mayor en funcion
 	 * de su valor de la F. Objetivo y su area total ocupada.
 	 * 
-	 * @param s - Solucion a comparar.
+	 * @param s Solucion a comparar.
 	 * @return 1, 0 o -1 en funcion de si la solucion es
 	 * mayor, igual o menor la solucion comparada.
 	 */
@@ -367,7 +359,7 @@ public class Solucion implements Comparable<Solucion>
 	/**
 	 * Metodo para resumir la informacion de una solucion en una cadena de caracteres.
 	 * 
-	 * @return String - Solucion
+	 * @return String - Solucion.
 	 */
 	public String toString () {
 		String toRet = new String ("\n\nSolucion\n\n");

@@ -16,19 +16,31 @@ import java.util.Collections;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @version 0.1
  */
 public class Problema
 {
+	/**
+	 * Array con todos los rectangulos del problema
+	 */
 	private ArrayList<Rectangulo> Rec;
-	private int AltoCaja; // H
-	private int AnchoCaja; // W
+	
+	/**
+	 * Alto de la Caja H
+	 */
+	private int AltoCaja;
+	
+	/**
+	 * Ancho de la caja W
+	 */
+	private int AnchoCaja;
 
+	
 	/**
 	 * Constructor de la clase Problema
 	 * 
-	 * @param fileName - Nombre del archivo
+	 * @param fileName Nombre del archivo
 	 */
 	public Problema(String fileName) 
 	{
@@ -38,6 +50,12 @@ public class Problema
 	    Collections.sort(Rec, Collections.reverseOrder());
 	}
 	
+	
+	/**
+	 * Metodo que devuelve los Retangulos del problema
+	 * 
+	 * @return ArrayList<Rectangulo> - Array de rectangulos
+	 */
 	public ArrayList<Rectangulo> getRectangulos() {
 		ArrayList<Rectangulo> recs = new ArrayList<Rectangulo>();
 		
@@ -50,18 +68,31 @@ public class Problema
 		return recs;
 	}
 	
+	
+	/**
+	 * Metodo que devuelve el alto de la caja
+	 * 
+	 * @return AltoCaja - El alto de la caja
+	 */
 	public int getAltoCaja() {
 		return AltoCaja;
 	}
 	
+	
+	/**
+	 * Metodo que devuelve el ancho de la caja
+	 * 
+	 * @return AnchoCaja - El ancho de la caja
+	 */
 	public int getAnchoCaja() {
 		return AnchoCaja;
 	}
 	
+	
 	/**
 	 * Metodo que devuelve un array de Retangulos despues de leerlos de un fichero
 	 * 
-	 * @param fileName - Nombre del archivo
+	 * @param fileName Nombre del archivo
 	 * @return ArrayList<Rectangulo> - Array de rectangulos
 	 */
 	public ArrayList<Rectangulo> readFile (String fileName)

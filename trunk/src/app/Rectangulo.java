@@ -8,14 +8,29 @@ package app;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @since 0.1
  */
 public class Rectangulo implements Comparable<Rectangulo>
 {
+	/**
+	 * Alto del rectangulo.
+	 */
 	private int alto;
+	
+	/**
+	 * Ancho del rectangulo.
+	 */
 	private int ancho;
+	
+	/**
+	 * Area del rectangulo.
+	 */
 	private int area;	
+	
+	/**
+	 * Posicion que ocupa en la caja.
+	 */
 	private Punto pos;
 
 	/**
@@ -33,8 +48,8 @@ public class Rectangulo implements Comparable<Rectangulo>
 	 * Constructor de la clase Rectangulo.
 	 * Crea un rectangulo dado su alto y su ancho.
 	 * 
-	 * @param alto - Alto del rectangulo
-	 * @param ancho - Ancho del rectangulo
+	 * @param alto Alto del rectangulo.
+	 * @param ancho Ancho del rectangulo.
 	 */
 	public Rectangulo(int alto, int ancho) {
 		this.alto = alto;
@@ -48,7 +63,7 @@ public class Rectangulo implements Comparable<Rectangulo>
 	 * Metodo que compara dos rectangulos y determina cual es el mayor en funcion
 	 * de su altura.
 	 * 
-	 * @param r - Rectangulo a comparar.
+	 * @param r Rectangulo a comparar.
 	 * @return 1, 0 o -1 en funcion de si el area del rectangulo comparador es
 	 * mayor, igual o menor que el area del rectangulo comparado.
 	 */
@@ -69,7 +84,7 @@ public class Rectangulo implements Comparable<Rectangulo>
 	/**
 	 * Metodo para asignar el alto a un rectangulo.
 	 * 
-	 * @param alto - Nuevo alto del rectangulo.
+	 * @param alto Nuevo alto del rectangulo.
 	 */
 	public void setAlto(int alto) {
 		this.alto = alto;
@@ -87,7 +102,7 @@ public class Rectangulo implements Comparable<Rectangulo>
 	/**
 	 * Metodo para asignar el ancho a un rectangulo.
 	 * 
-	 * @param ancho - Nuevo ancho del rectangulo.
+	 * @param ancho Nuevo ancho del rectangulo.
 	 */
 	public void setAncho(int ancho) {
 		this.ancho = ancho;
@@ -114,7 +129,7 @@ public class Rectangulo implements Comparable<Rectangulo>
 	/**
 	 * Metodo para asignar la posicion a un rectangulo.
 	 * 
-	 * @param pos - Nueva posicion del rectangulo.
+	 * @param pos Nueva posicion del rectangulo.
 	 */
 	public void setPos(Punto pos) {
 		this.pos = pos;

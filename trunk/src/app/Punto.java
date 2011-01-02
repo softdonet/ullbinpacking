@@ -12,7 +12,7 @@ package app;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @since 0.1
  */
 public class Punto implements Comparable<Punto>
@@ -33,8 +33,8 @@ public class Punto implements Comparable<Punto>
 	 * Constructor de la clase Punto.
 	 * Crea un punto dadas sus coordeandas x e y.
 	 * 
-	 * @param x - Coordenada x.
-	 * @param y - Coordenada y.
+	 * @param x Coordenada x.
+	 * @param y Coordenada y.
 	 * 
 	 */
 	public Punto(int x, int y) {
@@ -42,15 +42,17 @@ public class Punto implements Comparable<Punto>
 		this.y = y;
 	}
 
+	
 	/**
 	 * Metodo que asigna la coordenada x de un punto.
 	 * 
-	 * @param x - Nueva coordeanda x.
+	 * @param x Nueva coordeanda x.
 	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 
+	
 	/**
 	 * Metodo que obtiene la coordenada x de un punto.
 	 * 
@@ -69,6 +71,7 @@ public class Punto implements Comparable<Punto>
 		this.y = y;
 	}
 
+	
 	/**
 	 * Metodo que obtiene la coordenada y de un punto.
 	 * 
@@ -78,11 +81,12 @@ public class Punto implements Comparable<Punto>
 		return y;
 	}
 	
+	
 	/**
 	 * Metodo que compara dos puntos y determina cual es prioritario segun su
 	 * coordenada y.
 	 *  
-	 * @param p - Punto con el que compararse.
+	 * @param p Punto con el que compararse.
 	 * @return 1, 0 o -1 en funcion de si el comparador es mayor, igual o menor
 	 * al comparado.
 	 */
@@ -93,7 +97,7 @@ public class Punto implements Comparable<Punto>
 	/**
 	 * Metodo para resumir la informacion de un Punto en una cadena de caracteres.
 	 * 
-	 * @return cadena de caracteres con el punto
+	 * @return cadena de caracteres con el punto.
 	 */
 	public String toString() {
 		return new String("(" + this.x + "," + this.y + ")");

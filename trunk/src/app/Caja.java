@@ -11,23 +11,39 @@ import java.util.Collections;
  * @author Jaime Gonzalez Valdes
  * @author Oscar Mateos Lopez
  * 
- * @version 1.0
+ * @version 2.0
  * @since 0.1
  */
 public class Caja 
 {
+	/**
+	 * Alto de la caja.
+	 */
 	private int alto;
+	
+	/**
+	 * Ancho de la caja.
+	 */
 	private int ancho;
+	
+	/**
+	 * Area de la caja.
+	 */
 	private int area;
 	private int Nu;
+	
+	/**
+	 * Punto libres y sus respectivas cotas.
+	 */
 	private ArrayList<PuntoCota> PC;
 	private ArrayList<Rectangulo> RecIn;
 	
+	
 	/**
-	 * Constructor para la clase Caja
+	 * Constructor para la clase Caja.
 	 * 
-	 * @param alto - Alto de la caja
-	 * @param ancho - Ancho de la caja
+	 * @param alto Alto de la caja.
+	 * @param ancho Ancho de la caja.
 	 */
 	public Caja(int alto, int ancho) {
 		this.alto = alto;
@@ -40,41 +56,52 @@ public class Caja
 		PC.add(new PuntoCota(new Punto(), alto));
 	}
 
+	
 	/**
-	 * Metodo que devuelve el ancho de la caja
+	 * Metodo que devuelve el ancho de la caja.
 	 * 
-	 * @return ancho - Ancho de la caja
+	 * @return ancho - Ancho de la caja.
 	 */
 	public int getAncho() {
 		return ancho;
 	}
 	
+	
 	/**
-	 * Metodo que devuelve el valor Nu. Utilizado en el metodo Grasp
+	 * Metodo que devuelve el valor Nu. Utilizado en el metodo Grasp.
 	 * 
-	 * @return ancho - Ancho de la caja
+	 * @return Nu
 	 */
 	public int getNu() {
 		return Nu;
 	}
 	
+	
 	/**
-	 * Metodo que modifica el valor Nu
+	 * Metodo que modifica el valor Nu.
 	 * 
-	 * @return ancho - Ancho de la caja
+	 * @param i 
 	 */
 	public void setNu(int i){
 		Nu = i;
 	}
+	
+	
 	/**
-	 * Metodo que devuelve el area de la caja
+	 * Metodo que devuelve el area de la caja.
 	 * 
-	 * @return area - Area de la caja
+	 * @return area - Area de la caja.
 	 */
 	public int getArea() {
 		return area;
 	}
 
+	
+	/**
+	 * Metodo que devuelve el area restante de la caja.
+	 * 
+	 * @return aux - Area restante.
+	 */
 	public int getAreaRestante() {
 		int aux = 0; 
 		for (int i = 0; i < this.RecIn.size(); i++) {
@@ -86,9 +113,9 @@ public class Caja
 
 	
 	/**
-	 * Metodo que comprueba si cabe un rectangulo dentro de la caja
+	 * Metodo que comprueba si cabe un rectangulo dentro de la caja.
 	 * 
-	 * @param r - Rectangulo a introducir en la caja
+	 * @param r Rectangulo a introducir en la caja.
 	 * @return boolean
 	 */
 	public boolean CabeRectangulo(Rectangulo r) {
@@ -111,10 +138,10 @@ public class Caja
 	
 	/**
 	 * Metodo que devuelve un array de rectangulos, en el cual almacenamos
-	 * las 3 mejores posibilidades de inserción para un rectangulo r que pasamos
+	 * las 3 mejores posibilidades de insercion para un rectangulo r que pasamos
 	 * por parametro.
 	 * 
-	 * @param r - Rectangulo a introducir en la caja
+	 * @param r Rectangulo a introducir en la caja.
 	 * @return Rectangulo[]
 	 */
 	public Rectangulo[] CabeAlgunRectangulo(Rectangulo r) {
@@ -144,14 +171,13 @@ public class Caja
 	}
 	
 	/**
-	 * Metodo que devuelve dentro de un array de rectangulos,
-	 * la posicion del rectangulo con mayor desperdicio de espacio.
-	 * Candidato a salir del array.
+	 * Metodo que devuelve una posicion para insertar.
+	 * Usado en el metodo GRASP.
 	 * 
-	 * @param Rectangulo[] R - Array de candidatos a insertar
+	 * @param R Array de candidatos a insertar.
 	 * @return int
 	 */
-	public int PosicionInsertar(Rectangulo[] R) {
+	private int PosicionInsertar(Rectangulo[] R) {
 		int toRet = 0;
 		int aux = 0;
 		for (int i = 0; i < R.length; i++) {
@@ -180,10 +206,10 @@ public class Caja
 	 * el valor del rectangulo con mayor desperdicio de espacio.
 	 * Candidato a salir del array.
 	 * 
-	 * @param Rectangulo[] R - Array de candidatos a insertar
+	 * @param R Array de candidatos a insertar.
 	 * @return int
 	 */
-	public int ValorMax(Rectangulo[] R) {
+	private int ValorMax(Rectangulo[] R) {
 		int aux = 0;
 		for (int i = 0; i < R.length; i++) {
 			Rectangulo r = R[i];
@@ -207,13 +233,13 @@ public class Caja
 	
 	
 	/**
-	 * Añade los puntos libres que se generan al añadir un rectangulo 
-	 * en el contenedor
+	 * Anade los puntos libres que se generan al anadir un rectangulo 
+	 * en el contenedor.
 	 * 
-	 * @param puntoRec - Punto donde se va a colocar el rectangulo
-	 * @param cota - Altura maxima del punto
-	 * @param altoRec - Alto del rectangulo
-	 * @param anchoRec - Ancho del rectangulo
+	 * @param puntoRec Punto donde se va a colocar el rectangulo.
+	 * @param cota Altura maxima del punto.
+	 * @param altoRec Alto del rectangulo.
+	 * @param anchoRec Ancho del rectangulo.
 	 */
 	public void AddPuntosLibres(Punto puntoRec, int cota, int altoRec, int anchoRec) {	
 		if (((puntoRec.getY() + altoRec) < this.alto) && (cota > altoRec)) {
@@ -267,9 +293,9 @@ public class Caja
 	
 		
 	/**
-	 * Introduce un rectangulo en el contenedor y genera los puntos libres
+	 * Introduce un rectangulo en el contenedor y genera los puntos libres.
 	 * 
-	 * @param r - Nuevo rectangulo a añadir
+	 * @param r Nuevo rectangulo a anadir.
 	 */
 	public void NuevoRectangulo(Rectangulo r) {
 		RecIn.add(r);
@@ -294,9 +320,10 @@ public class Caja
 		
 	
 	/**
-	 * Salida del contenido de la caja 
+	 * Salida del contenido de la caja .
 	 * 
-	 * @return String - Cadena de caracteres que muestra cada caja y los rectangulos introducidos en cada una
+	 * @return String - Cadena de caracteres que muestra cada caja y los rectangulos
+	 *  introducidos en cada una.
 	 */
 	public String toString() {
 		String toRet = new String();
@@ -319,7 +346,6 @@ public class Caja
 		
 		Rectangulo r = new Rectangulo();
 		
-		// Hay fallos aun
 		for (int i = 0; i < this.RecIn.size(); i++) {
 			r = RecIn.get(i);
 			Punto p = r.getPos();
