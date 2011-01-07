@@ -36,8 +36,10 @@ public class Main
 			System.out.println("Busqueda por entornos variable:");
 			System.out.println("7 - VND: Variable Neighbourhood Descent");
 			System.out.println("8 - BVNS: VNS Basico. Busquedas multistart");
+			System.out.println("Busqueda Tabu:");
+			System.out.println("9 - BT: Busqueda Tabu");
 			System.out.println("Busqueda por entornos variable:");
-			System.out.println("9 - BD: Busquedas Dispersas");
+			System.out.println("10 - BD: Busquedas Dispersas");
 			System.out.println();
 			System.out.println();
 			System.out.println("0 - Salir ");
