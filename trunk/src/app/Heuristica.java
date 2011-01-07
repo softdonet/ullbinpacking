@@ -219,14 +219,14 @@ public class Heuristica
 				
 			case BD:
 				System.out.println("Busquedas dispersas");
-				/*				
+				
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				
 				this.MejorSolucion = BD(veces);
 				break;
