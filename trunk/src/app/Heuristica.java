@@ -213,7 +213,20 @@ public class Heuristica
 				break;
 				
 			case BT:
-				System.out.println("Busqueda tabu");
+				/*System.out.println("Busqueda tabu");
+				break;
+				*/
+				System.out.println("Busquedas dispersas");
+				
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = BD(veces);
 				break;
 				
 			case BD:
