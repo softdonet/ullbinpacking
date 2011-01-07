@@ -85,19 +85,20 @@ public class Heuristica
 		
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
-		int veces = 0;
+		int veces = 50;
 		int criterio = 0;
 		
 		switch (tipoHeuristica) {
 			case BAP:
 				System.out.println("Busqueda aleatoria pura");
-				System.out.print("Introduzca el numero de ejecuciones: ");
+				/*System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
+				
 				
 				System.out.println("Introduzca el criterio a utilizar para la parada");
 				System.out.println("0 - NOMEJORA: No mejora la solucion optima en n-ejecuciones");
@@ -116,13 +117,13 @@ public class Heuristica
 				
 			case BRA:
 				System.out.println("Busqueda por recorrido al azar");
-				System.out.print("Introduzca el numero de ejecuciones: ");
+				/*System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 				
 				System.out.println("Introduzca el criterio a utilizar para la parada");
 				System.out.println("0 - NOMEJORA: No mejora la solucion optima en n-ejecuciones");
@@ -153,13 +154,13 @@ public class Heuristica
 				Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 						Problema.getAltoCaja(), Problema.getAnchoCaja(), Solucion.GRASP);
 				
-				System.out.print("Introduzca el numero de ejecuciones: ");
+				/*System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 				
 				this.MejorSolucion = GRASP(solInicial, veces);
 				break;
@@ -167,13 +168,13 @@ public class Heuristica
 			case BAM:
 				System.out.println("Busqueda con arranque multiple");
 								
-				System.out.print("Introduzca el numero de ejecuciones: ");
+				/*System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 				
 				this.MejorSolucion = BAM(veces);
 				break;
@@ -186,7 +187,7 @@ public class Heuristica
 
 			case VND:
 				System.out.println("Busqueda por entornos variable");
-								
+				/*				
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
@@ -194,13 +195,13 @@ public class Heuristica
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				*/
 				this.MejorSolucion = VND(veces);
 				break;
 
 			case BVNS:
 				System.out.println("Busqueda por entornos variable");
-								
+				/*				
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
@@ -208,37 +209,24 @@ public class Heuristica
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				*/
 				this.MejorSolucion = BVNS(veces);
 				break;
 				
 			case BT:
-				/*System.out.println("Busqueda tabu");
-				break;
-				*/
-				System.out.println("Busquedas dispersas");
-				
-				System.out.print("Introduzca el numero de ejecuciones: ");
-				try {
-					veces = Integer.parseInt(br.readLine());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				this.MejorSolucion = BD(veces);
+				System.out.println("Busqueda tabu");
 				break;
 				
 			case BD:
 				System.out.println("Busquedas dispersas");
-								
+				/*				
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 				
 				this.MejorSolucion = BD(veces);
 				break;
