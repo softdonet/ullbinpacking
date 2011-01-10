@@ -9,7 +9,7 @@ import java.util.Queue;
 import java.util.Random;
 
 /**
- * Clase con los datos necesarios para representar una solucion de Bin Packing.
+ * Clase con los metodos heuristicos para obtener mejores soluciones.
  * 
  * @author Eduardo Perez Mederos
  * @author Miguel Monterrey Varela
@@ -93,14 +93,13 @@ public class Heuristica
 		switch (tipoHeuristica) {
 			case BAP:
 				System.out.println("Busqueda aleatoria pura");
-				/*System.out.print("Introduzca el numero de ejecuciones: ");
+				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
-				
+				}
 				
 				System.out.println("Introduzca el criterio a utilizar para la parada");
 				System.out.println("0 - NOMEJORA: No mejora la solucion optima en n-ejecuciones");
@@ -119,13 +118,13 @@ public class Heuristica
 				
 			case BRA:
 				System.out.println("Busqueda por recorrido al azar");
-				/*System.out.print("Introduzca el numero de ejecuciones: ");
+				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				
 				System.out.println("Introduzca el criterio a utilizar para la parada");
 				System.out.println("0 - NOMEJORA: No mejora la solucion optima en n-ejecuciones");
@@ -156,13 +155,13 @@ public class Heuristica
 				Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 						Problema.getAltoCaja(), Problema.getAnchoCaja(), Solucion.GRASP);
 				
-				/*System.out.print("Introduzca el numero de ejecuciones: ");
+				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				
 				this.MejorSolucion = GRASP(solInicial, veces);
 				break;
@@ -170,13 +169,13 @@ public class Heuristica
 			case BAM:
 				System.out.println("Busqueda con arranque multiple");
 								
-				/*System.out.print("Introduzca el numero de ejecuciones: ");
+				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				
 				this.MejorSolucion = BAM(veces);
 				break;
@@ -188,8 +187,7 @@ public class Heuristica
 				break;
 
 			case VND:
-				System.out.println("Busqueda por entornos variable");
-				/*				
+				System.out.println("Busqueda por entornos variable");			
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
@@ -197,13 +195,12 @@ public class Heuristica
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				*/
+
 				this.MejorSolucion = VND(veces);
 				break;
 
 			case BVNS:
-				System.out.println("Busqueda por entornos variable");
-				/*				
+				System.out.println("Busqueda por entornos variable");				
 				System.out.print("Introduzca el numero de ejecuciones: ");
 				try {
 					veces = Integer.parseInt(br.readLine());
@@ -211,7 +208,7 @@ public class Heuristica
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				*/
+
 				this.MejorSolucion = BVNS(veces);
 				break;
 				
@@ -252,6 +249,9 @@ public class Heuristica
 	 * posible cambiando aleatoriamente las permutaciones que le pasamos al
 	 * algoritmo de colocacion
 	 * 
+	 * @param criterio
+	 * @param veces
+	 * 
 	 * @return Solucion - Solucion del problema
 	 */
 	public Solucion BAP(int criterio, int veces) {
@@ -286,6 +286,9 @@ public class Heuristica
 	 * Metodo que devuelve la solucion del problema. Busca nuevas vecinas intercambiando
 	 * al azar algunas posiciones de la permutacion.
 	 * 
+	 * @param criterio
+	 * @param veces
+	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion BRA(int criterio, int veces) {
@@ -316,7 +319,9 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Busqueda local.
+	 * 
+	 * @param solActual
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
@@ -349,6 +354,9 @@ public class Heuristica
 	 * para cada rectangulo los 3 mejores puntos donde ponerlo, (donde menos desperdicio
 	 * genera) y a partir de ahí inserta en uno de los 3 eligiendo al azar.
 	 * 
+	 * @param solInicial
+	 * @param veces
+	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GRASP(Solucion solInicial, int veces) {
@@ -377,6 +385,8 @@ public class Heuristica
 	 * Metodo que devuelve la solucion del problema. Genera una solucion inicial
 	 * y apartir de ahí N soluciones mediante Busquedas Locales haciendo las per
 	 * tinentes comparaciones para quedarnos con la mejor.
+	 * 
+	 * @param veces
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */	
@@ -407,6 +417,8 @@ public class Heuristica
 	 * en las permutaciones pero ademása, contiene una cola-memoria que nos 
 	 * ayuda a evitar repetir el mismo movimiento en las siguietnes N (en este 
 	 * caso 7) veces.
+	 * 
+	 * @param veces
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
@@ -470,6 +482,8 @@ public class Heuristica
 	 * el cual primero produce una agitacion en la permutación y posteriormente rea-
 	 * liza una Busqueda Local.
 	 * 
+	 * @param veces
+	 * 
 	 * @return Solucion - Solucion del problema.
 	 */	
 	public Solucion BVNS(int veces) {
@@ -496,8 +510,11 @@ public class Heuristica
 		return mejorSolucion;
 	}
 	
+	
 	/**
 	 * Metodo que devuelve la solucion del problema. Metodo de busquedas por entorno.
+	 * 
+	 * @param veces
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
@@ -525,6 +542,11 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que devuelve la solucion del problema. Metodo de recocido simulado.
+	 * 
+	 * @return Solucion - Solucion del problema.
+	 */
 	public Solucion RS() {
 		Solucion mejorSolucion = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(), Problema.getAltoCaja(),
 				Problema.getAnchoCaja(), Solucion.FINITE);
@@ -570,6 +592,15 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que devuelve la solucion del problema. Metodo de busqueda dispersa.
+	 * Realiza dentro la mejora de la solucion combinada.
+	 * Y actualiza el RefSet.
+	 * 
+	 * @param veces
+	 * 
+	 * @return Solucion - Solucion del problema.
+	 */
 	@SuppressWarnings("unchecked")
 	Solucion BD(int veces) {
 		ArrayList<Solucion> Poblacion = new ArrayList<Solucion>();
@@ -658,6 +689,8 @@ public class Heuristica
 	 * Una solución vecina de otra se obtiene al intercambia el orden en
 	 * que se consideran dos rectángulos.
 	 * 
+	 * @param s Solucion inicial
+	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GeneraSVecina(Solucion s) {
@@ -687,6 +720,9 @@ public class Heuristica
 	 * endo aleatoria la eleccion de la primera posicion a rodar y contiguas
 	 * a esta el resto.
 	 * 
+	 * @param s Solucion inicial
+	 * @param k Numero de elementos
+	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GeneraSEntorno(Solucion s, int k) {
@@ -713,12 +749,14 @@ public class Heuristica
 				Problema.getAnchoCaja(), Solucion.FINITE);
 	}
 
-	
 
 	/**
 	 * Metodo que devuelve la solucion del problema. Genera nuevos entornos
 	 * mediante la agitacion que consiste en intercambiar la posicion de x
 	 * elementos (valor que nos llega por parametro, k) en al permutacion.
+	 * 
+	 * @param s Solucion inicial
+	 * @param k Numero de elementos
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
@@ -746,6 +784,13 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que crea una poblacion. Una poblacion es un conjunto de soluciones.
+	 * 
+	 * @param tamPoblacion
+	 * 
+	 * @return ArrayList<Solucion> - Array de soluciones
+	 */
 	private ArrayList<Solucion> CrearPoblacion(int tamPoblacion) {
 		ArrayList<Solucion> poblacion = new ArrayList<Solucion>();
 		
@@ -775,6 +820,16 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que crea un conjunto de referencia.
+	 * Un conjunto de referencia es un nuevo conjunto creado a partir de la población
+	 * con soluciones de alta calidad y dispersas.
+	 * 
+	 * @param tamRS
+	 * @param pobAux
+	 * 
+	 * @return ArrayList<Solucion> - Array de soluciones
+	 */
 	private ArrayList<Solucion> GenerarReferenceSet(int tamRS, ArrayList<Solucion> pobAux) {
 		ArrayList<Solucion> refset = new ArrayList<Solucion>();
 		
@@ -831,6 +886,17 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que crea un subconjunto.
+	 * Selecciona todos los subcojuntos de soluciones
+	 * del conjunto de referencia para realizar buenas combinaciones.
+	 * 
+	 * @param RefSet
+	 * @param x
+	 * @param y
+	 * 
+	 * @return ArrayList<Solucion> - Array de soluciones
+	 */
 	private ArrayList<Solucion> SeleccionarSubconjunto(ArrayList<Solucion> RefSet, int x, int y) {
 		ArrayList<Solucion> subconjunto = new ArrayList<Solucion>();
 		
@@ -841,6 +907,14 @@ public class Heuristica
 	}
 	
 	
+	/**
+	 * Metodo que combina los subconjuntos de soluciones seleccionadas
+	 * del conjunto de referencia para obtener una nueva solucion.
+	 * 
+	 * @param subconjunto
+	 * 
+	 * @return Solucion - Nueva solucion combinada
+	 */
 	private Solucion CombinarSoluciones(ArrayList<Solucion> subconjunto) {
 		int perm0[] = subconjunto.get(0).getPermutacion();
 		int perm1[] = subconjunto.get(1).getPermutacion();
