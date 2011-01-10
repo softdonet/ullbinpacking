@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -215,6 +217,17 @@ public class Heuristica
 				
 			case BT:
 				System.out.println("Busqueda tabu");
+				
+				System.out.print("Introduzca el numero de ejecuciones: ");
+				try {
+					veces = Integer.parseInt(br.readLine());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				this.MejorSolucion = BT(veces);
+
 				break;
 				
 			case BD:
@@ -235,7 +248,9 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Busca la mejor solucion
+	 * posible cambiando aleatoriamente las permutaciones que le pasamos al
+	 * algoritmo de colocacion
 	 * 
 	 * @return Solucion - Solucion del problema
 	 */
@@ -268,7 +283,8 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Busca nuevas vecinas intercambiando
+	 * al azar algunas posiciones de la permutacion.
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
@@ -329,7 +345,9 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Este metodo va seleccionando
+	 * para cada rectangulo los 3 mejores puntos donde ponerlo, (donde menos desperdicio
+	 * genera) y a partir de ahí inserta en uno de los 3 eligiendo al azar.
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
@@ -356,7 +374,9 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Genera una solucion inicial
+	 * y apartir de ahí N soluciones mediante Busquedas Locales haciendo las per
+	 * tinentes comparaciones para quedarnos con la mejor.
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */	
@@ -380,10 +400,75 @@ public class Heuristica
         } while (clembuterol > 0);
 		return mejorSolucion;
 	}
+
+	
+	/**
+	 * Metodo que devuelve la solucion del problema. Genera cambios aleatorios
+	 * en las permutaciones pero ademása, contiene una cola-memoria que nos 
+	 * ayuda a evitar repetir el mismo movimiento en las siguietnes N (en este 
+	 * caso 7) veces.
+	 * 
+	 * @return Solucion - Solucion del problema.
+	 */
+	public Solucion BT(int veces) {
+		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
+				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
+
+		int permutacion[] = solInicial.getPermutacion();
+		Solucion mejorSolucion = solInicial;
+		int i = 0, j = 0, clembuterol = veces;
+		boolean encontrado = false;
+		
+		Integer[] pares;
+        pares = new Integer[2];		
+
+		Queue<Integer[]> colatabu = new LinkedList<Integer[]>();
+		
+		do {
+			do {
+				Random rnd = new Random(System.nanoTime());
+				
+				i = (int)(rnd.nextDouble() * permutacion.length);
+				j = (int)(rnd.nextDouble() * permutacion.length);
+			
+				if (i != j) {
+					pares[0] = i;
+					pares[1] = j;
+					if (!colatabu.contains(pares)) {
+						if (colatabu.size() < 7) {
+							colatabu.add(pares);							
+						} else {
+							colatabu.remove();
+							colatabu.add(pares);
+						}
+						encontrado = true;
+						swap(permutacion, i, j);
+					}	
+				}
+				
+				
+			} while (!encontrado);
+			
+			solInicial = new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
+					Problema.getAnchoCaja(), Solucion.FINITE);
+
+			if (solInicial.compareTo(mejorSolucion) < 0) {
+				mejorSolucion = solInicial;
+				clembuterol = veces;
+			}
+			
+			clembuterol--;
+			
+		} while (clembuterol > 0);
+		
+		return mejorSolucion;
+	}
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Metodo de busquedas por entorno
+	 * el cual primero produce una agitacion en la permutación y posteriormente rea-
+	 * liza una Busqueda Local.
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */	
@@ -411,7 +496,11 @@ public class Heuristica
 		return mejorSolucion;
 	}
 	
-	
+	/**
+	 * Metodo que devuelve la solucion del problema. Metodo de busquedas por entorno.
+	 * 
+	 * @return Solucion - Solucion del problema.
+	 */
 	public Solucion VND(int veces) {
 		Solucion solInicial = new Solucion(Solucion.ALEATORIA, Problema.getRectangulos(),
 				Problema.getAltoCaja(), Problema.getAnchoCaja(),0);
@@ -593,32 +682,31 @@ public class Heuristica
 	
 	
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema, generando entornos que 
+	 * obtenemos a rodando k posiciones para el final de la permutacion, si-
+	 * endo aleatoria la eleccion de la primera posicion a rodar y contiguas
+	 * a esta el resto.
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
 	public Solucion GeneraSEntorno(Solucion s, int k) {
 		int permutacion[] = s.getPermutacion();
 		
-		int clembuterol = 0;
-		int i = 0, x = 0, f = 0;
+		int i = 0;
 		int j = permutacion.length - 1;
 		int temp = 0;
 
 		Random rnd = new Random(System.nanoTime());
 		
 		i = (int)(rnd.nextDouble() * (j - 1));
-		x = i;
 		temp = permutacion[i];
 
 		for (int z = 0; z < k; z++) {				
 			for (int m = i; m < j; m++) {
-				System.out.println("aaaaaaaaaaaaskadjflñksa");
 				swap(permutacion, m, m+1);
-				//if (i == j) {
 			}
-			//permutacion[j] = temp;
-			//temp = permutacion[i];
+			permutacion[j] = temp;
+			temp = permutacion[i];
 		}
 				
 		return new Solucion(permutacion, Problema.getRectangulos(), Problema.getAltoCaja(),
@@ -626,9 +714,11 @@ public class Heuristica
 	}
 
 	
-	
+
 	/**
-	 * Metodo que devuelve la solucion del problema
+	 * Metodo que devuelve la solucion del problema. Genera nuevos entornos
+	 * mediante la agitacion que consiste en intercambiar la posicion de x
+	 * elementos (valor que nos llega por parametro, k) en al permutacion.
 	 * 
 	 * @return Solucion - Solucion del problema.
 	 */
