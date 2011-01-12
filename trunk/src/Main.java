@@ -52,9 +52,13 @@ public class Main
 			}
 		
 			System.out.println();
+			long tiempoInicio = System.currentTimeMillis();
 			Heuristica h = new Heuristica(opcion, p);
-		
+			long totalTiempo = System.currentTimeMillis() - tiempoInicio;
 			System.out.println(h);
+			System.out.println("El tiempo de demora es :" + totalTiempo + " miliseg");
+			System.out.println();
+			System.out.println();
 		} while (opcion != 0);
 	}
 }
