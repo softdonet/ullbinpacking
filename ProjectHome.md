@@ -1,0 +1,1 @@
+Proyecto para desarrollar y testear diversas heurísticas que resuelvan el problema del empaquetado 2D sin cortes tipo guillotina.
